@@ -16,18 +16,7 @@ interface FetchEmployeeDataState{
 export class FetchEmployee extends React.Component<RouteComponentProps<{}>, FetchEmployeeDataState> { 
     constructor(props: RouteComponentProps<{}>) {
        super(props);
-
-        this.state = { empList: [], loading: true };  
-
-        fetch('api/Employee/Index')  
-        .then(response => response.json() as Promise<EmployeeData[]>)  
-        .then(data => {  
-            this.setState({ empList: data, loading: false });  
-        }); 
-
-         // This binding is necessary to make "this" work in the callback  
-         this.handleDelete = this.handleDelete.bind(this);  
-         this.handleEdit = this.handleEdit.bind(this); 
+        this.state = { empList: [], loading: true }; 
     }
 
    public render(){
@@ -41,6 +30,20 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
         </p>  
         {contents}  
     </div>;  
+    }
+
+    componentDidMount(){
+
+        fetch('api/Employee/Index')  
+        .then(response => response.json() as Promise<EmployeeData[]>)  
+        .then(data => {  
+            this.setState({ empList: data, loading: false });  
+        }); 
+
+        // This binding is necessary to make "this" work in the callback  
+         this.handleDelete = this.handleDelete.bind(this);  
+         this.handleEdit = this.handleEdit.bind(this); 
+
     }
 
      // Handle Delete request for an employee  

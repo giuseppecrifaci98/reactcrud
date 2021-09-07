@@ -16,17 +16,6 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     constructor(props:RouteComponentProps<{}>){
         super(props);
         this.state = { cityList: [], loading: true };  
-       
-        fetch('api/City/Index')  
-        .then(response => response.json() as Promise<CityData[]>)  
-        .then(data => {  
-            this.setState({ cityList: data, loading: false });  
-        }); 
-
-         // This binding is necessary to make "this" work in the callback  
-         this.handleDelete = this.handleDelete.bind(this);  
-         this.handleEdit = this.handleEdit.bind(this); 
-
     }
 
     public render(){
@@ -40,6 +29,18 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
         </p>  
         {contents}  
     </div>;  
+    }
+
+    componentDidMount(){
+        fetch('api/City/Index')  
+        .then(response => response.json() as Promise<CityData[]>)  
+        .then(data => {  
+            this.setState({ cityList: data, loading: false });  
+        }); 
+
+         // This binding is necessary to make "this" work in the callback  
+         this.handleDelete = this.handleDelete.bind(this);  
+         this.handleEdit = this.handleEdit.bind(this); 
     }
 
       // Handle Delete request for an employee  

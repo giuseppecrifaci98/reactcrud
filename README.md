@@ -1,1 +1,1 @@
-Crud with React and  Entity Framework Core.
+Crud with React and  Entity Framework Core and FontAwesome for the icons
