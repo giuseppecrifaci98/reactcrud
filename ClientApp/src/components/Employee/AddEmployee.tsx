@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
+import { CityData } from '../../class/CityData';
 import { EmployeeData } from '../../class/EmployeeData';
 
 interface AddEmployeeDataState{
     title:string;
     loading:boolean;
-    cityList: Array<any>;
+    cityList: CityData[];
     empData: EmployeeData;
     checkExistUser: boolean;
 }
@@ -15,8 +16,8 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         super(props);
         this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false }; 
 
-        fetch('api/Employee/GetCityList')  
-        .then(response => response.json() as Promise<Array<any>>)  
+        fetch('api/City/Index')  
+        .then(response => response.json() as Promise<CityData[]>)  
         .then(data => {  
             this.setState({ cityList: data });  
         });  
@@ -34,7 +35,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
   
         // This will set state for Add employee  
         else {  
-            this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData };  
+            this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData, checkExistUser:false };  
         }  
   
         // This binding is necessary to make "this" work in the callback  

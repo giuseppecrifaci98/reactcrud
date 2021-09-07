@@ -14,8 +14,9 @@ interface FetchEmployeeDataState{
 }
 
 export class FetchEmployee extends React.Component<RouteComponentProps<{}>, FetchEmployeeDataState> { 
-    constructor() {
-       super();
+    constructor(props: RouteComponentProps<{}>) {
+       super(props);
+
         this.state = { empList: [], loading: true };  
 
         fetch('api/Employee/Index')  
@@ -86,8 +87,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                         <td>{emp.department}</td>  
                         <td>{emp.city}</td>  
                         <td>  
-                            <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(emp.employeeId)} /> &nbsp;
-                            <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(emp.employeeId)} />
+                            <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={() => this.handleEdit(emp.employeeId)} /> &nbsp;
+                            <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={() => this.handleDelete(emp.employeeId)} />
                         </td>  
                     </tr>  
                 )}  
