@@ -132,9 +132,9 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
                         </select>  
                     </div>  
                 </div>  
-                {this.state.checkExistUser == true ? <p className="text-danger">Utente che tenti di creare è gia presente.</p> : ''}
+                {this.state.checkExistUser == true ? <p className="text-danger">User you are trying to create is already present.</p> : ''}
                 <div className="form-group">  
-                    <button type="submit" className="btn btn-success">Save</button>  &nbsp;
+                    <button type="submit" className="btn btn-success">{this.state.title=="Create Employee" ? "Save" : "Update" }</button>  &nbsp;
                     <button className="btn btn-danger" onClick={this.handleCancel}>Cancel</button>  
                 </div >  
             </form >  

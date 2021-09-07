@@ -12,3 +12,12 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.icon-delete{
+  color:red;
+  font-size:20px;
+}
+.icon-details{
+  color:green;
+  font-size:20px;
+}

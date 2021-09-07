@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { EmployeeData } from '../../class/EmployeeData';
-import './FetchEmployee.css';
+import '../../custom.css';
 
 
 interface FetchEmployeeDataState{
@@ -75,7 +75,7 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                     <th scope="col">Gender</th>  
                     <th scope="col">Department</th>  
                     <th scope="col">City</th>  
-                    <th scope="col">Action</th>
+                    <th scope="col">Actions</th>
                 </tr>  
             </thead>  
             <tbody>  

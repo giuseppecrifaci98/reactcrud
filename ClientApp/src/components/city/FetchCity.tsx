@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { CityData } from '../../class/CityData';
-
+import '../../custom.css';
 
 interface FetchCityDataState{
     cityList: CityData[];
@@ -69,9 +69,9 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
             return <table className='table table-striped'>  
                 <thead>  
                     <tr>  
-                        <th scope="col">CityId</th>  
+                        <th scope="col">City Id</th>  
                         <th scope="col">City Name</th>  
-                        <th scope="col">Action</th>
+                        <th scope="col">Actions</th>
                     </tr>  
                 </thead>  
                 <tbody>  

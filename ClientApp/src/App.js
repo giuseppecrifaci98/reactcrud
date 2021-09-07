@@ -5,6 +5,8 @@ import { Home } from './components/Home';
 import { FetchEmployee } from './components/Employee/FetchEmployee';
 import { AddEmployee } from './components/Employee/AddEmployee';
 import {FetchCity} from './components/city/FetchCity';
+import { AddCity } from './components/city/AddCity';
+
 import './custom.css'
 
 export default class App extends Component {
@@ -18,6 +20,8 @@ export default class App extends Component {
         <Route path='/addemployee' component={AddEmployee} />
         <Route path='/employee/edit/:empid' component={AddEmployee} />  
         <Route path='/fetchcity' component={FetchCity} /> 
+        <Route path='/addnewcity' component={AddCity} />
+        <Route path='/city/edit/:cityid' component={AddCity} />
       </Layout>
     );
   }
