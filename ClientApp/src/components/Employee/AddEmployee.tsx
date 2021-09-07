@@ -15,7 +15,6 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
     constructor(props){
         super(props);
         this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false }; 
-
         fetch('api/City/Index')  
         .then(response => response.json() as Promise<CityData[]>)  
         .then(data => {  
@@ -37,10 +36,6 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         else {  
             this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData, checkExistUser:false };  
         }  
-  
-        // This binding is necessary to make "this" work in the callback  
-        this.handleSave = this.handleSave.bind(this);  
-        this.handleCancel = this.handleCancel.bind(this);  
     }
 
     public render(){
@@ -54,6 +49,12 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         <hr />  
         {contents}  
     </div>;  
+    }
+
+    componentDidMount(){
+        // This binding is necessary to make "this" work in the callback  
+        this.handleSave = this.handleSave.bind(this);  
+        this.handleCancel = this.handleCancel.bind(this);  
     }
 
     private handleSave(event) {  

@@ -16,20 +16,15 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
 
          var cityid = this.props.match.params["cityid"];  
 
-         if(cityid>0){
-            fetch('api/City/Details/' + cityid)  
-            .then(response => response.json() as Promise<CityData>)  
-            .then(data => {  
-                this.setState({ title: "Edit", loading: false, cityList: data });  
-            });  
-         }
-         else
-         this.state = { title: "Create City", loading: false, cityList: new CityData, checkExistCity:false };  
-
-        // This binding is necessary to make "this" work in the callback  
-        this.handleSave = this.handleSave.bind(this);  
-        this.handleCancel = this.handleCancel.bind(this); 
-
+        if(cityid>0){
+           fetch('api/City/Details/' + cityid)  
+           .then(response => response.json() as Promise<CityData>)  
+           .then(data => {  
+               this.setState({ title: "Edit", loading: false, cityList: data });  
+           });  
+        }
+        else
+        this.state = { title: "Create City", loading: false, cityList: new CityData, checkExistCity:false };  
     }
 
     public render(){
@@ -41,6 +36,12 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
         <hr />  
         {contents}  
     </div>;  
+    }
+
+    componentDidMount(){
+       // This binding is necessary to make "this" work in the callback  
+       this.handleSave = this.handleSave.bind(this);  
+       this.handleCancel = this.handleCancel.bind(this); 
     }
 
     private handleSave(event) {  
