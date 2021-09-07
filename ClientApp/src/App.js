@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchEmployee } from './components/Employee/FetchEmployee';
+import { AddEmployee } from './components/Employee/AddEmployee';
 
 import './custom.css'
 
@@ -14,6 +15,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/fetchemployee' component={FetchEmployee} />
+        <Route path='/addemployee' component={AddEmployee} />
       </Layout>
     );
   }

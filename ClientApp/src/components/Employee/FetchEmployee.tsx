@@ -1,10 +1,12 @@
 import * as React from 'react'; 
-import ReactDOM from 'react-dom'
 import {RouteComponentProps } from 'react-router';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { EmployeeData } from '../../class/EmployeeData';
+import './FetchEmployee.css';
+
 
 interface FetchEmployeeDataState{
     empList: EmployeeData[];
@@ -84,8 +86,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                         <td>{emp.department}</td>  
                         <td>{emp.city}</td>  
                         <td>  
-                            <FontAwesomeIcon icon={faInfoCircle}  onClick={(id) => this.handleEdit(emp.employeeId)} /> &nbsp;
-                            <FontAwesomeIcon icon={faTrash} onClick={(id) => this.handleDelete(emp.employeeId)} />
+                            <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(emp.employeeId)} /> &nbsp;
+                            <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(emp.employeeId)} />
                         </td>  
                     </tr>  
                 )}  
@@ -96,12 +98,4 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
 
 
 }
-
-export class EmployeeData {  
-    employeeId: number = 0;  
-    name: string = "";  
-    gender: string = "";  
-    city: string = "";  
-    department: string = "";  
-} 
 

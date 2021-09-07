@@ -13,7 +13,7 @@ namespace ReactCrudDemo.Models
         {
             try
             {
-                return db.Employees.ToList();
+                return db.Employees.OrderBy(x => x.Name).Distinct().ToList();
             }
             catch
             {
@@ -26,9 +26,17 @@ namespace ReactCrudDemo.Models
         {
             try
             {
-                db.Employees.Add(employee);
-                db.SaveChanges();
-                return 1;
+                int result = 1;
+                var findUser = db.Employees.Where(x => x.Name == employee.Name).FirstOrDefault();
+                if (findUser != null)
+                    result = 0;
+                else if (findUser == null)
+                {
+                    db.Employees.Add(employee);
+                    db.SaveChanges();
+                    result = 1;
+                }
+                return result;
             }
             catch
             {
@@ -85,7 +93,7 @@ namespace ReactCrudDemo.Models
         public List<City> GetCities()
         {
             List<City> lstCity = new List<City>();
-            lstCity = (from CityList in db.Cities select CityList).ToList();
+            lstCity = (from CityList in db.Cities select CityList).OrderBy(x=>x.CityName).Distinct().ToList();
             return lstCity;
         }
 
