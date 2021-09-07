@@ -6,7 +6,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { EmployeeData } from '../../class/EmployeeData';
 import '../../custom.css';
-
+import axios from 'axios';
 
 interface FetchEmployeeDataState{
     empList: EmployeeData[];
@@ -34,11 +34,9 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
 
     componentDidMount(){
 
-        fetch('api/Employee/Index')  
-        .then(response => response.json() as Promise<EmployeeData[]>)  
-        .then(data => {  
-            this.setState({ empList: data, loading: false });  
-        }); 
+        axios.get('api/Employee/Index').then(res =>  {
+            this.setState({ empList: res.data, loading: false });  
+        });
 
         // This binding is necessary to make "this" work in the callback  
          this.handleDelete = this.handleDelete.bind(this);  
@@ -51,16 +49,12 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
         if (!window.confirm("Do you want to delete employee with Id: " + id + "?"))  
             return;  
         else {  
-            fetch('api/Employee/Delete/' + id, {  
-                method: 'delete'  
-            }).then(data => {  
-                this.setState(  
-                    {  
-                        empList: this.state.empList.filter((rec) => {  
-                            return (rec.employeeId != id);  
-                        })  
-                    });  
-            });  
+            axios.delete(`api/Employee/Delete/${id}`).then(res => {
+                this.setState({empList: this.state.empList.filter((rec) => { 
+                    return (rec.employeeId != id);  
+                     })  
+                });  
+              })
         }  
     } 
 

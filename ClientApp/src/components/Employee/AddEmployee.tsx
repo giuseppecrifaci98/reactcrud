@@ -2,6 +2,7 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { CityData } from '../../class/CityData';
 import { EmployeeData } from '../../class/EmployeeData';
+import axios from 'axios';
 
 interface AddEmployeeDataState{
     title:string;
@@ -15,21 +16,20 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
     constructor(props){
         super(props);
         this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false }; 
-        fetch('api/City/Index')  
-        .then(response => response.json() as Promise<CityData[]>)  
-        .then(data => {  
-            this.setState({ cityList: data });  
-        });  
+        
+        axios.get(`api/City/Index`)
+        .then(res => {
+            this.setState({cityList:res.data})
+        });
 
         var empid = this.props.match.params["empid"];  
 
         // This will set state for Edit employee  
         if (empid > 0) {  
-            fetch('api/Employee/Details/' + empid)  
-                .then(response => response.json() as Promise<EmployeeData>)  
-                .then(data => {  
-                    this.setState({ title: "Edit", loading: false, empData: data });  
-                });  
+               axios.get(`api/Employee/Details/${empid}`)
+               .then(res=>{
+                this.setState({ title: "Edit", loading: false, empData: res.data });  
+               })
         }  
   
         // This will set state for Add employee  
@@ -51,6 +51,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
     </div>;  
     }
 
+
     componentDidMount(){
         // This binding is necessary to make "this" work in the callback  
         this.handleSave = this.handleSave.bind(this);  
@@ -60,32 +61,24 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
     private handleSave(event) {  
         event.preventDefault();  
         const data = new FormData(event.target);  
-  
-        // PUT request for Edit employee.  
-        if (this.state.empData.employeeId) {  
-            fetch('api/Employee/Edit', {  
-                method: 'PUT',  
-                body: data,
-            }).then(response => response.json())
-                .then((responseJson) => {  
+ 
+        if (this.state.empData.employeeId) {
+                axios.put(`api/Employee/Edit`,data)
+                .then(res => {
                     this.props.history.push("/fetchemployee");  
-                });  
+                });
         }   
-  
-        // POST request for Add employee.  
-        else {  
-            fetch('api/Employee/Create', {  
-                method: 'POST',  
-                body: data, 
-            }).then((response) => response.json())  
-                .then((responseJson) => {  
-                    if(responseJson==0)
-                    this.setState({checkExistUser: true});
-                    else{
-                        this.setState({checkExistUser: false});
-                    this.props.history.push("/fetchemployee");
-                    }
-                })  
+        else { 
+
+            axios.post('api/Employee/Create',data)
+            .then(responseJson=>{
+                if(responseJson.data==0)
+                this.setState({checkExistUser: true});
+                else{
+                    this.setState({checkExistUser: false});
+                this.props.history.push("/fetchemployee");
+                }
+            });
         }  
     }
     

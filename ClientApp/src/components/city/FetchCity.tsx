@@ -6,6 +6,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { CityData } from '../../class/CityData';
 import '../../custom.css';
+import axios from 'axios';
 
 interface FetchCityDataState{
     cityList: CityData[];
@@ -32,32 +33,25 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     }
 
     componentDidMount(){
-        fetch('api/City/Index')  
-        .then(response => response.json() as Promise<CityData[]>)  
-        .then(data => {  
-            this.setState({ cityList: data, loading: false });  
-        }); 
+        axios.get('api/City/Index').then(res =>  {
+            this.setState({ cityList: res.data, loading: false });  
+        });
 
          // This binding is necessary to make "this" work in the callback  
          this.handleDelete = this.handleDelete.bind(this);  
          this.handleEdit = this.handleEdit.bind(this); 
     }
 
-      // Handle Delete request for an employee  
       private handleDelete(id: number) {  
         if (!window.confirm("Do you want to delete city with Id: " + id + "?"))  
             return;  
         else {  
-            fetch('api/City/Delete/' + id, {  
-                method: 'delete'  
-            }).then(data => {  
-                this.setState(  
-                    {  
-                        cityList: this.state.cityList.filter((rec) => {  
-                            return (rec.cityId != id);  
-                        })  
-                    });  
-            });  
+            axios.delete(`api/City/Delete/${id}`).then(res => {
+                this.setState({cityList: this.state.cityList.filter((rec) => { 
+                    return (rec.cityId != id);  
+                     })  
+                });  
+              });
         }  
     } 
 

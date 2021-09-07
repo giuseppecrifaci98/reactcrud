@@ -53,7 +53,7 @@ namespace ReactCrudDemo.Models
                 db.SaveChanges();
                 return 1;
             }
-            catch
+            catch(Exception ex)
             {
                 throw;
             }

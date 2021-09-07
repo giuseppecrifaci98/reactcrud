@@ -1,6 +1,7 @@
 import * as React from 'react'; 
 import {RouteComponentProps } from 'react-router';
 import { CityData } from '../../class/CityData';
+import axios from 'axios';
 
 interface FetchCityDataState{
     title:string;
@@ -16,15 +17,18 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
 
          var cityid = this.props.match.params["cityid"];  
 
-        if(cityid>0){
-           fetch('api/City/Details/' + cityid)  
-           .then(response => response.json() as Promise<CityData>)  
-           .then(data => {  
-               this.setState({ title: "Edit", loading: false, cityList: data });  
-           });  
-        }
-        else
-        this.state = { title: "Create City", loading: false, cityList: new CityData, checkExistCity:false };  
+         if(cityid>0){
+
+             axios.get(`api/City/Details/${cityid}`)
+             .then(res=>{
+              this.setState({ title: "Edit", loading: false, cityList: res.data });  
+             });
+         }
+         else
+             this.state = { title: "Create City", loading: false, cityList: new CityData, checkExistCity:false };  
+             
+
+      
     }
 
     public render(){
@@ -47,33 +51,25 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
     private handleSave(event) {  
         event.preventDefault();  
         const data = new FormData(event.target);  
-  
-        // PUT request for Edit employee.  
+
         if (this.state.cityList.cityId) {  
-            fetch('api/City/Edit', {  
-                method: 'PUT',  
-                body: data,
-            }).then(response => response.json())
-                .then((responseJson) => {  
-                    this.props.history.push("/fetchcity");  
-                });  
+            axios.put(`api/City/Edit`, data)
+            .then(res => {
+                this.props.history.push("/fetchcity");  
+            });
         }   
-  
-        // POST request for Add employee.  
+    
         else {  
-            fetch('api/City/Create', {  
-                method: 'POST',  
-                body: data, 
-            }).then((response) => response.json())  
-                .then((responseJson) => {  
-                    if(responseJson==0)
-                    this.setState({checkExistCity: true});
-                    else{
-                        this.setState({checkExistCity: false});
-                    this.props.history.push("/fetchcity");
-                    }
-                })  
-        }  
+            axios.post('api/City/Create',data)
+            .then(responseJson=>{
+                if(responseJson.data==0)
+                this.setState({checkExistCity: true});
+                else{
+                    this.setState({checkExistCity: false});
+                this.props.history.push("/fetchcity");
+                }
+            });
+        }
     }
     
     private handleCancel(e) {  
