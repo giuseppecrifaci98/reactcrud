@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -26,7 +28,15 @@ namespace ReactCrudDemo.Models
         [Required]
         [StringLength(6)]
         public string Gender { get; set; }
-        [Required]
-        public string PhotoFileName { get; set; }
+
+        [Column(TypeName = "nvarchar(100)")]
+        public string ImageName { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
+
+        [NotMapped]
+        public string ImageSrc { get; set; }
+
     }
 }
