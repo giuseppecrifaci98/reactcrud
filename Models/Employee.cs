@@ -26,13 +26,7 @@ namespace ReactCrudDemo.Models
         [Required]
         [StringLength(6)]
         public string Gender { get; set; }
-
         [Required]
-        public string FileName { get; set; }
-
-        [Required]
-        public byte[] Picture { get; set; }
-
-
+        public string PhotoFileName { get; set; }
     }
 }
