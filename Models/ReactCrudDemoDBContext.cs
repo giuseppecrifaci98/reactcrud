@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
@@ -8,13 +9,15 @@ namespace ReactCrudDemo.Models
 {
     public partial class ReactCrudDemoDBContext : DbContext
     {
+        private IConfigurationRoot _config;
         public ReactCrudDemoDBContext()
         {
         }
 
-        public ReactCrudDemoDBContext(DbContextOptions<ReactCrudDemoDBContext> options)
+        public ReactCrudDemoDBContext(IConfigurationRoot config, DbContextOptions<ReactCrudDemoDBContext> options)
             : base(options)
         {
+            _config = config;
         }
 
         public virtual DbSet<City> Cities { get; set; }

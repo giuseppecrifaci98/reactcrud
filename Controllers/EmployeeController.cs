@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReactCrudDemo.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,50 +13,155 @@ namespace ReactCrudDemo.Controllers
 {
     public class EmployeeController : Controller
     {
-       private readonly EmployeeDataAccessLayer objemployee = new EmployeeDataAccessLayer();
+        private readonly EmployeeDataAccessLayer objemployee = new EmployeeDataAccessLayer();
+        private readonly ReactCrudDemoDBContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public EmployeeController(ReactCrudDemoDBContext context, IWebHostEnvironment hostEnvironment)
+        {
+            _context = context;
+            this._hostEnvironment = hostEnvironment;
+        }
+
 
         [HttpGet]
         [Route("api/Employee/Index")]
-        public IEnumerable<Employee> Index()
+        public async Task<ActionResult<IEnumerable<Employee>>> Index()
         {
-            return objemployee.GetEmployees();
+            return await _context.Employees
+                .Select(x => new Employee()
+                {
+                    EmployeeId = x.EmployeeId,
+                    Name = x.Name,
+                    City = x.City,
+                    Department = x.Department,
+                    Gender = x.Gender,
+                    ImageName = x.ImageName,
+                    ImageSrc = String.Format("{0}://{1}{2}/Photos/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+                }).ToListAsync();
         }
 
         [HttpPost]
         [Route("api/Employee/Create")]
-        public int Create(Employee employee)
+
+        public async Task<ActionResult<Employee>> Create([FromForm]Employee employee)
         {
-            return objemployee.AddEmployee(employee);
+            var result = _context.Employees.Where(x => x.Name == employee.Name).FirstOrDefault();
+            if (result == null)
+            {
+                employee.ImageName = await SaveImage(employee.ImageFile);
+                _context.Employees.Add(employee);
+                await _context.SaveChangesAsync();
+                return Ok(Json(true));
+            }
+            return Ok(Json(false));
         }
 
         [HttpGet]
         [Route("api/Employee/Details/{id}")]
-        public Employee Details(int id)
+
+        public async Task<ActionResult<Employee>> Details(int id)
         {
-            return objemployee.GetEmployeeData(id);
+            var employeeModel = await _context.Employees.Where(x => x.EmployeeId == id)
+                .Select(y => new Employee()
+                {
+                    EmployeeId = y.EmployeeId,
+                    Name = y.Name,
+                    City = y.City,
+                    Department = y.Department,
+                    Gender = y.Gender,
+                    ImageName = y.ImageName,
+                    ImageSrc = String.Format("{0}://{1}{2}/Photos/{3}", Request.Scheme, Request.Host, Request.PathBase, y.ImageName)
+                })
+                .FirstOrDefaultAsync();
+
+            if (employeeModel == null)
+                return NotFound();
+            return employeeModel;
         }
 
         [HttpPut]
         [Route("api/Employee/Edit")]
-        public int Edit(Employee employee)
+        public async Task<IActionResult> Edit( Employee employe)
         {
-            return objemployee.UpdateEmployee(employee);
+
+            if (employe.EmployeeId != employe.EmployeeId)
+            {
+                return BadRequest();
+            }
+
+            if (employe.ImageFile != null)
+            {
+                DeleteImage(employe.ImageName);
+                employe.ImageName = await SaveImage(employe.ImageFile);
+            }
+
+            _context.Entry(employe).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EmployeeModelExists(employe.EmployeeId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        private bool EmployeeModelExists(int id)
+        {
+            return _context.Employees.Any(e => e.EmployeeId == id);
         }
 
         [HttpDelete]
         [Route("api/Employee/Delete/{id}")]
-        public int Delete(int id)
+        //public int Delete(int id)
+        //{
+        //    return objemployee.DeleteEmployee(id);
+        //}
+
+        public async Task<ActionResult<Employee>> Delete(int id)
         {
-            return objemployee.DeleteEmployee(id);
+            var employeeModel = await _context.Employees.FindAsync(id);
+            if (employeeModel == null)
+                return NotFound();
+
+            DeleteImage(employeeModel.ImageName);
+            _context.Employees.Remove(employeeModel);
+            await _context.SaveChangesAsync();
+            return employeeModel;
         }
 
-        [HttpGet]
-        [Route("api/Employee/GetCityList")]
-        public IEnumerable<City> Details()
-        {
-            return objemployee.GetCities();
-        }
 
+        [NonAction]
+        public async Task<string> SaveImage(IFormFile imageFile)
+        {
+            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageFile + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", imageName);
+            using(var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
+            }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+        }
 
     }
 }

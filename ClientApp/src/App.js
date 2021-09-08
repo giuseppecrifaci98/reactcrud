@@ -6,7 +6,7 @@ import { FetchEmployee } from './components/Employee/FetchEmployee';
 import { AddEmployee } from './components/Employee/AddEmployee';
 import {FetchCity} from './components/city/FetchCity';
 import { AddCity } from './components/city/AddCity';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.css'
 
 export default class App extends Component {

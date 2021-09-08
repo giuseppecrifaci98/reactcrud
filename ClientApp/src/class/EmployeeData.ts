@@ -4,5 +4,8 @@ export class EmployeeData {
     gender: string = "";  
     city: string = "";  
     department: string = "";  
+    imageName: string= "";
+    imageSrc: '/img/image_placeholder.png';
+    imageFile: null;
 } 
 

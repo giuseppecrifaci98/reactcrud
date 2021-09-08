@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ namespace ReactCrudDemo.Models
                 db.SaveChanges();
                 return 1;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw;
             }
