@@ -22,9 +22,12 @@ namespace ReactCrudDemo.Models
         [Required]
         [StringLength(20)]
         public string City { get; set; }
-        [Required]
-        [StringLength(20)]
-        public string Department { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public Department Department { get; set; }
+
+        [ForeignKey("DepartmentId")]
         [Required]
         [StringLength(6)]
         public string Gender { get; set; }

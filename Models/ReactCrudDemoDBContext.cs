@@ -23,6 +23,8 @@ namespace ReactCrudDemo.Models
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
 
+        public virtual DbSet<Department> Departments { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -45,12 +47,23 @@ namespace ReactCrudDemo.Models
             {
                 entity.Property(e => e.City).IsUnicode(false);
 
-                entity.Property(e => e.Department).IsUnicode(false);
+                modelBuilder.Entity<Employee>()
+          .HasOne(e => e.Department)
+          .WithMany(c => c.Employees);
 
                 entity.Property(e => e.Gender).IsUnicode(false);
 
                 entity.Property(e => e.Name).IsUnicode(false);
             });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                modelBuilder.Entity<Department>()
+         .HasMany(c => c.Employees)
+         .WithOne(e => e.Department);
+                entity.Property(e => e.DepartmentName).IsUnicode(false);
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }
