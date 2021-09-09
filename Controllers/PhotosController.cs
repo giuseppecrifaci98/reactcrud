@@ -24,7 +24,7 @@ namespace ReactCrudDemo.Controllers
         }
 
         [HttpGet]
-        [Route("api/Photos/{nome}")]
+        [Route("Photos/{nome}")]
         public async Task<ActionResult> GetFileSystemStoreObject(string nome)
         {
             if (nome != null)

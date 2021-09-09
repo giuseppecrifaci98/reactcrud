@@ -2,7 +2,6 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { CityData } from '../../class/CityData';
 import { EmployeeData } from '../../class/EmployeeData';
-import {Image} from 'react-bootstrap';
 import axios from 'axios';
 
 interface AddEmployeeDataState{
@@ -13,30 +12,14 @@ interface AddEmployeeDataState{
     checkExistUser: boolean;
     alt:'Upload an Image';
     src:any;
-    setImg:null;
+    setImg:any;
 }
-
-    const MostraFoto = ({id}) => {
-        const url = `api/Photos/${id}`;
-      
-        return <div>
-        <Image width="200px" height="200px" src={url} />
-        </div>
-      }
-
 
 export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmployeeDataState>{
     constructor(props){
         super(props);
         this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image'};
 
-        const MostraFoto = ({id}) => {
-            const url = `api/Photos/${id}`;
-          
-            return <div>
-              <img src={url} alt= "Employee" />
-            </div>
-          }
         
         axios.get(`api/City/Index`)
         .then(res => {
@@ -49,13 +32,8 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         if (empid > 0) {  
                axios.get(`api/Employee/Details/${empid}`)
                .then(res=>{
-                const imageFile = res.data['imageName'];
-
-
                   this.setState({ title: "Update", loading: false, empData: res.data });  
                })
-
-            
         }  
   
         // This will set state for Add employee  
@@ -79,11 +57,9 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
 
     componentDidMount(){
-        // This binding is necessary to make "this" work in the callback  
-        this.handleSave = this.handleSave.bind(this);  
-        this.handleCancel = this.handleCancel.bind(this);
-        this.showPreview= this.showPreview.bind(this);
+        
     }
+
 
     private handleSave(event) {  
         event.preventDefault();  
@@ -92,8 +68,8 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         if (this.state.empData.employeeId) {
                 axios.put(`api/Employee/Edit`,data)
                 .then(res => {
-                   // this.props.history.push("/fetchemployee");  
-                   console.log(res);
+                     if(res.data['value']=="Updated")
+                        this.props.history.push("/fetchemployee");
                 });
         }   
         else { 
@@ -112,7 +88,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
     private showPreview(e){
         if(e.target.files[0]) {
-        this.setState({src: URL.createObjectURL(e.target.files[0]),alt: e.target.files[0].name});
+        this.setState({src: URL.createObjectURL(e.target.files[0]),alt: e.target.files[0].name,setImg:URL.createObjectURL(e.target.files[0])});
         }
     }
     
@@ -122,8 +98,24 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
     }  
 
     private renderCreateForm(cityList: Array<any>) {  
+        let profileImageSource;
+
+        if(this.state.src==null)
+        profileImageSource=this.state.src;
+
+        if(this.state.title=="Update" && this.state.empData.imageName==null)
+            profileImageSource=this.state.src;
+        else{
+            profileImageSource=this.state.empData.imageSrc;
+            if(this.state.setImg!=null)
+                profileImageSource=this.state.setImg;
+        }
+
+        if(this.state.title=="Create Employee")
+            profileImageSource=this.state.src;
+
         return (  
-            <form onSubmit={this.handleSave} >  
+            <form onSubmit={e => this.handleSave(e)} >  
                 <div className="form-group row" >  
                     <input type="hidden" name="employeeId" value={this.state.empData.employeeId} />  
                 </div>  
@@ -163,16 +155,16 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
                 <div className="form-group row">
                     <label htmlFor="imageFile" className="control-label col-md-12">Image</label>
                     <div className="col-md-4">
-                       {this.state.title=="Create Employee" ? <img src={this.state.src} width="200" height="200" /> :  <MostraFoto id={this.state.empData.imageName} /> }
+                             <img src={profileImageSource} width="200" height="200" />
                         <input type="file" name="imageFile" accept="image/*" className="form-control-file"
-                        onChange={this.showPreview} id="image-uploader" />
+                        onChange={(e) => this.showPreview(e)} id="image-uploader" />
                     </div>
 
                 </div>
                 {this.state.checkExistUser == true ? <p className="text-danger">User you are trying to create is already present.</p> : ''}
                 <div className="form-group">  
                     <button type="submit" className="btn btn-success">{this.state.title=="Create Employee" ? "Save" : "Update" }</button>  &nbsp;
-                    <button className="btn btn-danger" onClick={this.handleCancel}>Cancel</button>  
+                    <button className="btn btn-danger" onClick={e => this.handleCancel(e)}>Cancel</button>  
                 </div >  
             </form>
         )  

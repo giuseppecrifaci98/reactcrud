@@ -36,8 +36,7 @@ namespace ReactCrudDemo.Controllers
                     City = x.City,
                     Department = x.Department,
                     Gender = x.Gender,
-                    ImageName = x.ImageName,
-                    ImageSrc = String.Format("{0}://{1}{2}/Photos/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageName)
+                    ImageName = x.ImageName
                 }).ToListAsync();
         }
 
@@ -71,7 +70,7 @@ namespace ReactCrudDemo.Controllers
                     Department = y.Department,
                     Gender = y.Gender,
                     ImageName = y.ImageName,
-                    ImageSrc = String.Format("{0}://{1}{2}/Photos/{3}", Request.Scheme, Request.Host, Request.PathBase, y.ImageName)
+                    ImageSrc = $"/Photos/{ y.ImageName}"
                 })
                 .FirstOrDefaultAsync();
 
@@ -82,17 +81,13 @@ namespace ReactCrudDemo.Controllers
 
         [HttpPut]
         [Route("api/Employee/Edit")]
-        public async Task<IActionResult> Edit( Employee employe)
+        public async Task<IActionResult> Edit([FromForm] Employee employe)
         {
-
-            if (employe.EmployeeId != employe.EmployeeId)
-            {
-                return BadRequest();
-            }
-
             if (employe.ImageFile != null)
             {
-                DeleteImage(employe.ImageName);
+                if(employe.ImageName!=null)
+                    DeleteImage(employe.ImageName);
+
                 employe.ImageName = await SaveImage(employe.ImageFile);
             }
 
@@ -114,7 +109,7 @@ namespace ReactCrudDemo.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(Json("Updated"));
         }
 
         private bool EmployeeModelExists(int id)
