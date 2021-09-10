@@ -164,12 +164,12 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
                     </div>  
                 </div>  
                 <div className="form-group row">  
-                    <label className="control-label col-md-12" htmlFor="City">City</label>  
+                    <label className="control-label col-md-12" htmlFor="cityId">City</label>  
                     <div className="col-md-4">  
-                        <select className="form-control" data-val="true" name="City" defaultValue={this.state.empData.city} required>  
+                        <select className="form-control" data-val="true" name="cityId" defaultValue={this.state.empData.cityId} required>  
                             <option value="">-- Select City --</option>  
                             {cityList.map(city =>  
-                                <option key={city.cityId} value={city.cityName}>{city.cityName}</option>  
+                                <option key={city.cityId} value={city.cityId}>{city.cityName}</option>  
                             )}  
                         </select>  
                     </div>  

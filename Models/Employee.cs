@@ -20,11 +20,14 @@ namespace ReactCrudDemo.Models
         [StringLength(20)]
         public string Name { get; set; }
 
+        [NotMapped]
+        public string CityName { get; set; }
+
         [ForeignKey("CityID")]
         public int CityId { get; set; }
 
-        [NotMapped]
-        public string City { get; set; }
+        public City City { get; set; }
+
 
         [NotMapped]
         public string DepartmentName { get; set; }

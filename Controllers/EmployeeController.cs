@@ -32,8 +32,9 @@ namespace ReactCrudDemo.Controllers
                 {
                     EmployeeId = x.EmployeeId,
                     Name = x.Name,
-                    City = x.City,
-                    DepartmentId=x.DepartmentId,
+                    CityId=x.CityId,
+                    CityName = _context.Cities.Where(y => y.CityId == x.CityId).Select(z => z.CityName).FirstOrDefault(),
+                    DepartmentId = x.DepartmentId,
                     DepartmentName = _context.Departments.Where(y => y.DepartmentId == x.DepartmentId).Select(z => z.DepartmentName).FirstOrDefault(),
                     Gender = x.Gender,
                     ImageName = x.ImageName
@@ -47,7 +48,7 @@ namespace ReactCrudDemo.Controllers
         {
             var result = _context.Employees.Where(x => x.Name == employee.Name).FirstOrDefault();
             if (result == null)
-            {
+            { 
                 employee.ImageName = await SaveImage(employee.ImageFile, employee.Name);
                 _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
@@ -66,8 +67,9 @@ namespace ReactCrudDemo.Controllers
                 {
                     EmployeeId = y.EmployeeId,
                     Name = y.Name,
-                    City = y.City,
                     DepartmentId=y.DepartmentId,
+                    CityId = y.CityId,
+                    CityName = _context.Cities.Where(x => x.CityId == y.CityId).Select(z => z.CityName).FirstOrDefault(),
                     DepartmentName = _context.Departments.Where(t => t.DepartmentId == y.DepartmentId).Select(z => z.DepartmentName).FirstOrDefault(),
                     Gender = y.Gender,
                     ImageName = y.ImageName,
@@ -135,7 +137,9 @@ namespace ReactCrudDemo.Controllers
             if (employeeModel == null)
                 return NotFound();
 
+            if (employeeModel.ImageName != null) 
             DeleteImage(employeeModel.ImageName);
+
             _context.Employees.Remove(employeeModel);
             await _context.SaveChangesAsync();
             return employeeModel;
@@ -145,14 +149,18 @@ namespace ReactCrudDemo.Controllers
         [NonAction]
         public async Task<string> SaveImage(IFormFile imageFile, string name)
         {
-            string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = name.Replace(' ', '_')+ "_" + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", imageName);
-            using(var fileStream = new FileStream(imagePath, FileMode.Create))
+            if (imageFile != null)
             {
-                await imageFile.CopyToAsync(fileStream);
+                string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+                imageName = name.Replace(' ', '_') + "_" + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", imageName);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+                return imageName;
             }
-            return imageName;
+            else return null;
             }
 
         [NonAction]

@@ -45,7 +45,11 @@ namespace ReactCrudDemo.Models
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.Property(e => e.City).IsUnicode(false);
+
+                modelBuilder.Entity<Employee>()
+        .HasOne(e => e.City)
+        .WithMany(c => c.Employees);
+ 
 
                 modelBuilder.Entity<Employee>()
           .HasOne(e => e.Department)
