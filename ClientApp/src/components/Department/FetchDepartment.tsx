@@ -20,7 +20,9 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
     }
 
     public render(){
-        let contents = this.state.loading  ? <p><em>Loading...</em></p>   : this.renderDepartmentTable(this.state.depList);  
+        
+     let noData = this.state.depList.length==0 ? false: true;
+     let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderDepartmentTable(this.state.depList) : <p>No Data</p>;
 
     return <div>  
         <h1>Department Data</h1>  

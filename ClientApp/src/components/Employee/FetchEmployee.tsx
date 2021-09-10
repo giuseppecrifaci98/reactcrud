@@ -20,7 +20,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     }
 
    public render(){
-        let contents = this.state.loading  ? <p><em>Loading...</em></p>   : this.renderEmployeeTable(this.state.empList);  
+     let noData = this.state.empList.length==0 ? false: true;
+    let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderEmployeeTable(this.state.empList) : <p>No Data</p>;
 
     return <div>  
         <h1>Employee Data</h1>  

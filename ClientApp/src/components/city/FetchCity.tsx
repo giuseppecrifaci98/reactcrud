@@ -20,7 +20,8 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     }
 
     public render(){
-        let contents = this.state.loading  ? <p><em>Loading...</em></p>   : this.renderCityTable(this.state.cityList);
+    let noData = this.state.cityList.length==0 ? false: true;
+    let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderCityTable(this.state.cityList) : <p>No Data</p>;
 
     return <div>  
         <h1>City Data</h1>  
