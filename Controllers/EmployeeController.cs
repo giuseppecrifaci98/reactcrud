@@ -13,7 +13,6 @@ namespace ReactCrudDemo.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly EmployeeDataAccessLayer objemployee = new EmployeeDataAccessLayer();
         private readonly ReactCrudDemoDBContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
@@ -34,7 +33,8 @@ namespace ReactCrudDemo.Controllers
                     EmployeeId = x.EmployeeId,
                     Name = x.Name,
                     City = x.City,
-                    Department = x.Department,
+                    DepartmentId=x.DepartmentId,
+                    DepartmentName = _context.Departments.Where(y => y.DepartmentId == x.DepartmentId).Select(z => z.DepartmentName).FirstOrDefault(),
                     Gender = x.Gender,
                     ImageName = x.ImageName
                 }).ToListAsync();
@@ -67,7 +67,8 @@ namespace ReactCrudDemo.Controllers
                     EmployeeId = y.EmployeeId,
                     Name = y.Name,
                     City = y.City,
-                    Department = y.Department,
+                    DepartmentId=y.DepartmentId,
+                    DepartmentName = _context.Departments.Where(t => t.DepartmentId == y.DepartmentId).Select(z => z.DepartmentName).FirstOrDefault(),
                     Gender = y.Gender,
                     ImageName = y.ImageName,
                     ImageSrc = $"/Photos/{ y.ImageName}"
@@ -88,9 +89,18 @@ namespace ReactCrudDemo.Controllers
                 if(employe.ImageName!=null)
                     DeleteImage(employe.ImageName);
 
-                employe.ImageName = await SaveImage(employe.ImageFile);
+                    employe.ImageName = await SaveImage(employe.ImageFile);
             }
 
+            if (employe.ImageFile == null)
+            {
+                var employeeSaved = _context.Employees.Where(x => x.EmployeeId == employe.EmployeeId).Select(y => y.ImageName).FirstOrDefault();
+               
+                if (employeeSaved != null)
+                    employe.ImageName = employeeSaved;
+
+            }
+           
             _context.Entry(employe).State = EntityState.Modified;
 
             try
@@ -119,11 +129,6 @@ namespace ReactCrudDemo.Controllers
 
         [HttpDelete]
         [Route("api/Employee/Delete/{id}")]
-        //public int Delete(int id)
-        //{
-        //    return objemployee.DeleteEmployee(id);
-        //}
-
         public async Task<ActionResult<Employee>> Delete(int id)
         {
             var employeeModel = await _context.Employees.FindAsync(id);

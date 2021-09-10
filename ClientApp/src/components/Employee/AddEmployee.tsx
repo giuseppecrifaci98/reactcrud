@@ -2,6 +2,7 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { CityData } from '../../class/CityData';
 import { EmployeeData } from '../../class/EmployeeData';
+import { DepartmentData } from '../../class/DepartmentData';
 import axios from 'axios';
 
 interface AddEmployeeDataState{
@@ -13,18 +14,13 @@ interface AddEmployeeDataState{
     alt:'Upload an Image';
     src:any;
     setImg:any;
+    departmentData: DepartmentData[];
 }
 
 export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmployeeDataState>{
     constructor(props){
         super(props);
-        this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image'};
-
-        
-        axios.get(`api/City/Index`)
-        .then(res => {
-            this.setState({cityList:res.data})
-        });
+        this.state = { title: "", loading: true, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image', departmentData:[]};
 
         var empid = this.props.match.params["empid"];  
 
@@ -38,8 +34,22 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
   
         // This will set state for Add employee  
         else {  
-            this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image'};
+            this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image', departmentData:[]};
         }  
+    }
+
+    private  getCity(){
+        axios.get(`api/City/Index`)
+        .then(res => {
+            this.setState({cityList:res.data})
+        });
+    }
+
+    private getDepartment(){
+        axios.get(`api/Department/Index`)
+        .then(res=>{
+            this.setState({departmentData:res.data});
+        });
     }
 
     public render(){
@@ -49,7 +59,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
     return <div>  
         <h1>{this.state.title}</h1>  
-    <p>This form allows you to create a new Employee</p>  
+        {this.state.title=="Update" ? <p>This form allows you to update the Employee </p> : <p>This form allows you to create a new Employee</p> }
         <hr />  
         {contents}  
     </div>;  
@@ -57,7 +67,8 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
 
     componentDidMount(){
-        
+        this.getCity();
+        this.getDepartment();
     }
 
 
@@ -97,7 +108,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         this.props.history.push("/fetchemployee");  
     }  
 
-    private renderCreateForm(cityList: Array<any>) {  
+    private renderCreateForm(cityList: Array<any>, ) {  
         let profileImageSource;
 
         if(this.state.src==null)
@@ -136,9 +147,14 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
                     </div>  
                 </div >  
                 <div className="form-group row">  
-                    <label className="control-label col-md-12" htmlFor="Department" >Department</label>  
+                <label className="control-label col-md-12" htmlFor="department">Department</label>  
                     <div className="col-md-4">  
-                        <input className="form-control" type="text" name="Department" defaultValue={this.state.empData.department} required />  
+                    <select className="form-control" data-val="true" name="departmentId" defaultValue={this.state.empData.departmentId} required>  
+                            <option value="">-- Select Department --</option>  
+                            {this.state.departmentData.map(dep =>  
+                                <option key={dep.departmentId} value={dep.departmentId}>{dep.departmentName}</option>  
+                            )}  
+                        </select>  
                     </div>  
                 </div>  
                 <div className="form-group row">  

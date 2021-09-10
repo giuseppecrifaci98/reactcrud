@@ -81,7 +81,7 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                         <td>{emp.employeeId}</td>  
                         <td>{emp.name}</td>  
                         <td>{emp.gender}</td>  
-                        <td>{emp.department}</td>  
+                        <td>{emp.departmentName}</td>  
                         <td>{emp.city}</td>  
                         <td>  
                             <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={() => this.handleEdit(emp.employeeId)} /> &nbsp;

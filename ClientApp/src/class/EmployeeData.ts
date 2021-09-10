@@ -3,9 +3,10 @@ export class EmployeeData {
     name: string = "";  
     gender: string = "";  
     city: string = "";  
-    department: string = "";  
+    departmentName: string = "";  
     imageName: string= "";
     imageSrc: '/img/image_placeholder.png';
     imageFile: null;
+    departmentId:number;
 } 
 
