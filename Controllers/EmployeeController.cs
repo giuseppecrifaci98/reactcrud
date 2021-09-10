@@ -48,7 +48,7 @@ namespace ReactCrudDemo.Controllers
             var result = _context.Employees.Where(x => x.Name == employee.Name).FirstOrDefault();
             if (result == null)
             {
-                employee.ImageName = await SaveImage(employee.ImageFile);
+                employee.ImageName = await SaveImage(employee.ImageFile, employee.Name);
                 _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
                 return Ok(Json(true));
@@ -89,7 +89,7 @@ namespace ReactCrudDemo.Controllers
                 if(employe.ImageName!=null)
                     DeleteImage(employe.ImageName);
 
-                    employe.ImageName = await SaveImage(employe.ImageFile);
+                    employe.ImageName = await SaveImage(employe.ImageFile,employe.Name);
             }
 
             if (employe.ImageFile == null)
@@ -143,10 +143,10 @@ namespace ReactCrudDemo.Controllers
 
 
         [NonAction]
-        public async Task<string> SaveImage(IFormFile imageFile)
+        public async Task<string> SaveImage(IFormFile imageFile, string name)
         {
             string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageFile + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            imageName = name.Replace(' ', '_')+ "_" + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
             var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", imageName);
             using(var fileStream = new FileStream(imagePath, FileMode.Create))
             {
