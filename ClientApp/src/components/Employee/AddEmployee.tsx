@@ -25,17 +25,18 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         var empid = this.props.match.params["empid"];  
 
         // This will set state for Edit employee  
-        if (empid > 0) {  
-               axios.get(`api/Employee/Details/${empid}`)
-               .then(res=>{
-                  this.setState({ title: "Update", loading: false, empData: res.data });  
-               })
-        }  
-  
-        // This will set state for Add employee  
-        else {  
+        if (empid > 0)
+            this.EmployeeDetails(empid);
+        else 
             this.state = { title: "Create Employee", loading: false, cityList: [], empData: new EmployeeData, checkExistUser:false,src:'/img/image_placeholder.png',setImg:null,alt:'Upload an Image', departmentData:[]};
-        }  
+
+    }
+
+    private EmployeeDetails(id){
+        axios.get(`api/Employee/Details/${id}`)
+        .then(res=>{
+           this.setState({ title: "Update", loading: false, empData: res.data });  
+        })
     }
 
     private  getCity(){
@@ -71,30 +72,35 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         this.getDepartment();
     }
 
+    private EditEmployee(data:FormData){
+        axios.put(`api/Employee/Edit`,data)
+        .then(res => {
+             if(res.data['value']=="Updated")
+                this.props.history.push("/fetchemployee");
+        });
+    }
+
+    private CreateEmployee(data:FormData){
+        axios.post('api/Employee/Create',data)
+        .then(responseJson=>{
+            let checkUser = responseJson.data['value'];
+            if(checkUser){
+                    this.setState({checkExistUser: false});
+                this.props.history.push("/fetchemployee");
+            }else
+            this.setState({checkExistUser:true});
+        });
+    }
+
 
     private handleSave(event) {  
         event.preventDefault();  
         const data = new FormData(event.target);  
  
-        if (this.state.empData.employeeId) {
-                axios.put(`api/Employee/Edit`,data)
-                .then(res => {
-                     if(res.data['value']=="Updated")
-                        this.props.history.push("/fetchemployee");
-                });
-        }   
-        else { 
-
-            axios.post('api/Employee/Create',data)
-            .then(responseJson=>{
-                let checkUser = responseJson.data['value'];
-                if(checkUser){
-                        this.setState({checkExistUser: false});
-                    this.props.history.push("/fetchemployee");
-                }else
-                this.setState({checkExistUser:true});
-            });
-        }  
+        if (this.state.empData.employeeId)
+              this.EditEmployee(data);
+        else 
+            this.CreateEmployee(data);
     }
 
     private showPreview(e){

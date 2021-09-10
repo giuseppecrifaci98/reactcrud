@@ -32,16 +32,14 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     </div>;  
     }
 
-    componentDidMount(){
-
+    private getEmployee(){
         axios.get('api/Employee/Index').then(res =>  {
             this.setState({ empList: res.data, loading: false });  
         });
+    }
 
-        // This binding is necessary to make "this" work in the callback  
-         this.handleDelete = this.handleDelete.bind(this);  
-         this.handleEdit = this.handleEdit.bind(this); 
-
+    componentDidMount(){
+        this.getEmployee();
     }
 
      // Handle Delete request for an employee  
@@ -84,8 +82,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                         <td>{emp.departmentName}</td>  
                         <td>{emp.city}</td>  
                         <td>  
-                            <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={() => this.handleEdit(emp.employeeId)} /> &nbsp;
-                            <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={() => this.handleDelete(emp.employeeId)} />
+                            <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(emp.employeeId)} /> &nbsp;
+                            <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(emp.employeeId)} />
                         </td>  
                     </tr>  
                 )}  

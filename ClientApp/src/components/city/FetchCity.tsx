@@ -32,27 +32,29 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     </div>;  
     }
 
-    componentDidMount(){
+    private getCity(){
         axios.get('api/City/Index').then(res =>  {
             this.setState({ cityList: res.data, loading: false });  
         });
+    }
 
-         // This binding is necessary to make "this" work in the callback  
-         this.handleDelete = this.handleDelete.bind(this);  
-         this.handleEdit = this.handleEdit.bind(this); 
+    private DeleteCity(id){
+        axios.delete(`api/City/Delete/${id}`).then(res => {
+            this.setState({cityList: this.state.cityList.filter((rec) => { 
+                return (rec.cityId != id);  
+                 })  
+            });  
+          });
+    }
+
+    componentDidMount(){
+        this.getCity();
     }
 
       private handleDelete(id: number) {  
         if (!window.confirm("Do you want to delete city with Id: " + id + "?"))  
             return;  
-        else {  
-            axios.delete(`api/City/Delete/${id}`).then(res => {
-                this.setState({cityList: this.state.cityList.filter((rec) => { 
-                    return (rec.cityId != id);  
-                     })  
-                });  
-              });
-        }  
+        else this.DeleteCity(id);
     } 
 
     private handleEdit(id: number) {  
@@ -75,8 +77,8 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
                             <td>{city.cityId}</td>  
                             <td>{city.cityName}</td>  
                             <td>  
-                                <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={() => this.handleEdit(city.cityId)} /> &nbsp;
-                                <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={() => this.handleDelete(city.cityId)} />
+                                <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(city.cityId)} /> &nbsp;
+                                <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(city.cityId)} />
                             </td>  
                         </tr>  
                     )}  
