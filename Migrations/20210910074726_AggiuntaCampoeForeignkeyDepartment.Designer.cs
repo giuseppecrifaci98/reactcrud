@@ -9,8 +9,8 @@ using ReactCrudDemo.Models;
 namespace ReactCrudDemo.Migrations
 {
     [DbContext(typeof(ReactCrudDemoDBContext))]
-    [Migration("20210909094014_AggiuntaTabellaDepartmentForeignKey")]
-    partial class AggiuntaTabellaDepartmentForeignKey
+    [Migration("20210910074726_AggiuntaCampoeForeignkeyDepartment")]
+    partial class AggiuntaCampoeForeignkeyDepartment
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,7 @@ namespace ReactCrudDemo.Migrations
                     b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasColumnName("DepartmentId")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("DepartmentName")

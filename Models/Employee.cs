@@ -23,6 +23,9 @@ namespace ReactCrudDemo.Models
         [StringLength(20)]
         public string City { get; set; }
 
+        [NotMapped]
+        public string DepartmentName { get; set; }
+
         public int DepartmentId { get; set; }
 
         public Department Department { get; set; }
