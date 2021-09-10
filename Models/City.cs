@@ -17,5 +17,6 @@ namespace ReactCrudDemo.Models
         [Required]
         [StringLength(20)]
         public string CityName { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }
