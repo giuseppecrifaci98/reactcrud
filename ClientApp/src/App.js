@@ -8,6 +8,9 @@ import {FetchCity} from './components/city/FetchCity';
 import { AddCity } from './components/city/AddCity';
 import {FetchDepartment} from './components/Department/FetchDepartment';
 import {AddDepartment} from './components/Department/AddDepartment';
+import {RegisterComponent} from './components/Register/Register';
+import {LoginComponent} from './components/Login/Login';
+import {LogoutComponent} from './components/logout/logout';
 import './custom.css'
 
 export default class App extends Component {
@@ -26,6 +29,9 @@ export default class App extends Component {
         <Route path='/fetchDepartment' component={FetchDepartment} />
         <Route path='/adddepartment' component={AddDepartment} />
         <Route path='/department/edit/:depid' component={AddDepartment} />
+        <Route path='/register' component={RegisterComponent} />
+        <Route path='/login' component={LoginComponent} />
+        <Route path='/logout' component={LogoutComponent} />
       </Layout>
     );
   }

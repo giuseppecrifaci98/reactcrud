@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace ReactCrudDemo.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/Employee/Index")]
         public async Task<ActionResult<IEnumerable<Employee>>> Index()
@@ -36,6 +38,7 @@ namespace ReactCrudDemo.Controllers
                 }).ToListAsync();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("api/Employee/Create")]
 
@@ -75,6 +78,7 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json(false));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/Employee/Details/{id}")]
 
@@ -99,6 +103,7 @@ namespace ReactCrudDemo.Controllers
             return employeeModel;
         }
 
+        [Authorize]
         [HttpPut]
         [Route("api/Employee/Edit")]
         public async Task<IActionResult> Edit([FromForm] Employee employe)
@@ -161,6 +166,7 @@ namespace ReactCrudDemo.Controllers
             return _context.Employees.Any(e => e.EmployeeId == id);
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("api/Employee/Delete/{id}")]
         public async Task<ActionResult<Employee>> Delete(int id)

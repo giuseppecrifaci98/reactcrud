@@ -123,7 +123,6 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         if(this.state.title=="Update" && this.state.empData.imageFileData==null)
             profileImageSource=this.state.src;
         else{
-            console.log(this.state.empData);
             profileImageSource=`data:image/jpeg;base64,${this.state.empData.imageFileData}`;
             if(this.state.setImg!=null)
                 profileImageSource=this.state.setImg;
@@ -185,7 +184,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
                 </div>
                 {this.state.checkExistUser == true ? <p className="text-danger">User you are trying to create is already present.</p> : ''}
-                <div className="form-group">  
+                <div className="form-group mb-2 mt-2">  
                     <button type="submit" className="btn btn-success">{this.state.title=="Create Employee" ? "Save" : "Update" }</button>  &nbsp;
                     <button className="btn btn-danger" onClick={e => this.handleCancel(e)}>Cancel</button>  
                 </div >  

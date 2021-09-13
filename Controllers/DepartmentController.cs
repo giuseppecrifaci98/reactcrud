@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReactCrudDemo.Models;
@@ -32,6 +33,7 @@ namespace ReactCrudDemo.Controllers
                 }).ToListAsync();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("api/Department/Create")]
 
@@ -47,6 +49,7 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json(false));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/Department/Details/{id}")]
 
@@ -66,6 +69,7 @@ namespace ReactCrudDemo.Controllers
                 return depModel;
         }
 
+        [Authorize]
         [HttpPut]
         [Route("api/Department/Edit")]
         public async Task<IActionResult> Edit([FromForm] Department dep)
@@ -97,6 +101,7 @@ namespace ReactCrudDemo.Controllers
             return _context.Employees.Any(e => e.EmployeeId == id);
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("api/Department/Delete/{id}")]
         public async Task<ActionResult<Department>> Delete(int id)

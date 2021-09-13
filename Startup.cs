@@ -27,9 +27,11 @@ namespace ReactCrudDemo
         {
             services.AddDbContext<ReactCrudDemoDBContext>();
 
-            services.AddAuthentication(options => {
+            services.AddAuthentication(options =>
+            {
                 options.DefaultScheme = "Cookies";
-            }).AddCookie("Cookies", options => {
+            }).AddCookie("Cookies", options =>
+            {
                 options.Cookie.Name = "auth_cookie";
                 options.Cookie.SameSite = SameSiteMode.None;
                 options.Events = new CookieAuthenticationEvents
@@ -70,6 +72,19 @@ namespace ReactCrudDemo
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.None,
+            };
+
+            app.UseCookiePolicy(cookiePolicyOptions);
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

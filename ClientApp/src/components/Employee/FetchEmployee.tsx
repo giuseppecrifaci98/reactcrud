@@ -11,6 +11,7 @@ import axios from 'axios';
 interface FetchEmployeeDataState{
     empList: EmployeeData[];
     loading: boolean;
+    errorMessage?:string;
 }
 
 export class FetchEmployee extends React.Component<RouteComponentProps<{}>, FetchEmployeeDataState> { 
@@ -20,22 +21,26 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     }
 
    public render(){
-     let noData = this.state.empList.length==0 ? false: true;
-    let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderEmployeeTable(this.state.empList) : <p>No Data</p>;
+    let visibileAction = localStorage.getItem('login')  ? true: false;
+     let noData = !visibileAction && this.state.empList.length==0 ? this.state.errorMessage: visibileAction && this.state.empList.length > 0 ? true :false;
+     let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderEmployeeTable(this.state.empList) : <p>No Data</p>;
 
     return <div>  
         <h1>Employee Data</h1>  
         <p>This component fetching Employee data from the server.</p>  
-        <p>  
+        {!visibileAction && <p>To see this section you must be authenticated. If you are not authenticated try to login</p>}
+        {visibileAction && <p>  
             <Link to="/addemployee">Create New</Link>  
-        </p>  
+        </p>}
         {contents}  
     </div>;  
     }
 
     private getEmployee(){
         axios.get('api/Employee/Index').then(res =>  {
-            this.setState({ empList: res.data, loading: false });  
+            this.setState({ empList: res.data, loading: false }); 
+        }).catch(err=> {
+            this.setState({empList: [], loading: false, errorMessage:"To see this section you must be authenticated. If you are not authenticated try to login" }); 
         });
     }
 
@@ -43,27 +48,31 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
         this.getEmployee();
     }
 
-     // Handle Delete request for an employee  
+
+    private DeleteEmployee(id:number){
+        axios.delete(`api/Employee/Delete/${id}`).then(res => {
+            this.setState({empList: this.state.empList.filter((rec) => { 
+                return (rec.employeeId != id);  
+                 })  
+            });  
+          })
+    }
+ 
      private handleDelete(id: number) {  
         if (!window.confirm("Do you want to delete employee with Id: " + id + "?"))  
             return;  
-        else {  
-            axios.delete(`api/Employee/Delete/${id}`).then(res => {
-                this.setState({empList: this.state.empList.filter((rec) => { 
-                    return (rec.employeeId != id);  
-                     })  
-                });  
-              })
-        }  
+        else 
+            this.DeleteEmployee(id);
     } 
 
     private handleEdit(id: number) {  
         this.props.history.push("/employee/edit/" + id);  
     }  
 
-       // Returns the HTML table to the render() method.  
-       private renderEmployeeTable(empList: EmployeeData[]) {  
-        return <table className='table table-striped'>  
+       private renderEmployeeTable(empList: EmployeeData[]) {
+        const visibileAction=  localStorage.getItem('login')  ? true: false;
+        const contentShow = this.state.errorMessage != null ? <Link to="/login">Login</Link> : 
+        <table className='table table-striped'>  
             <thead>  
                 <tr>  
                     <th scope="col">EmployeeId</th>  
@@ -71,7 +80,7 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                     <th scope="col">Gender</th>  
                     <th scope="col">Department</th>  
                     <th scope="col">City</th>  
-                    <th scope="col">Actions</th>
+                    {visibileAction && <th scope="col">Actions</th>}
                 </tr>  
             </thead>  
             <tbody>  
@@ -82,16 +91,19 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                         <td>{emp.gender}</td>  
                         <td>{emp.departmentName}</td>  
                         <td>{emp.cityName}</td>  
-                        <td>  
+                       {visibileAction && <td>  
                             <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(emp.employeeId)} /> &nbsp;
                             <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(emp.employeeId)} />
                         </td>  
+                        }
                     </tr>  
                 )}  
             </tbody>  
-        </table>;  
-    }
+        </table>; 
 
+        return contentShow;
+    
+ }
 
 
 }

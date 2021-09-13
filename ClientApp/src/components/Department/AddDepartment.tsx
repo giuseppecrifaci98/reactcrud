@@ -85,7 +85,7 @@ export class AddDepartment extends React.Component<RouteComponentProps<{}>, Fetc
 
                 {this.state.checkExistDepartment == true ? <p className="text-danger">The department you are trying to add already exists.</p> : ''}
 
-                <div className="form-group">  
+                <div className="form-group mb-2 mt-2">  
                     <button type="submit" className="btn btn-success">{this.state.title=="Create Department" ? "Save" : "Update" }</button>  &nbsp;
                     <button className="btn btn-danger" onClick={(e)=>this.handleCancel(e)}>Cancel</button>  
                 </div>  

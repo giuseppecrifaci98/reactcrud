@@ -1,1 +1,4 @@
-Crud with React and  Entity Framework Core and FontAwesome for the icons
+Crud with React and  Entity Framework Core where I used:
+- Bootstrap for the front-end
+- FontAwesome for the icons
+- Axios for the http calls

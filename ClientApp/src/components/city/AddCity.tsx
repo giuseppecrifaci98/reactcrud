@@ -90,7 +90,7 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
 
                 {this.state.checkExistCity == true ? <p className="text-danger">The city you are trying to add already exists.</p> : ''}
 
-                <div className="form-group">  
+                <div className="form-group mb-2 mt-2">  
                     <button type="submit" className="btn btn-success">{this.state.title=="Create City" ? "Save" : "Update" }</button>  &nbsp;
                     <button className="btn btn-danger" onClick={(e)=>this.handleCancel(e)}>Cancel</button>  
                 </div>  

@@ -22,13 +22,14 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     public render(){
     let noData = this.state.cityList.length==0 ? false: true;
     let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderCityTable(this.state.cityList) : <p>No Data</p>;
+    let visibileAction = localStorage.getItem('login')  ? true: false;
 
     return <div>  
         <h1>City Data</h1>  
         <p>This component fetching City data from the server.</p>  
-        <p>  
+        {visibileAction && <p>  
             <Link to="/addnewcity">Create New</Link>  
-        </p>  
+        </p>}
         {contents}  
     </div>;  
     }
@@ -62,14 +63,14 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
         this.props.history.push("/city/edit/" + id);  
     }  
 
-        // Returns the HTML table to the render() method.  
         private renderCityTable(cityList: CityData[]) {  
+            let visibileAction = localStorage.getItem('login')  ? true: false;
             return <table className='table table-striped'>  
                 <thead>  
                     <tr>  
                         <th scope="col">City Id</th>  
                         <th scope="col">City Name</th>  
-                        <th scope="col">Actions</th>
+                       {visibileAction && <th scope="col">Actions</th>}
                     </tr>  
                 </thead>  
                 <tbody>  
@@ -77,10 +78,10 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
                         <tr key={city.cityId}>  
                             <td>{city.cityId}</td>  
                             <td>{city.cityName}</td>  
-                            <td>  
+                            {visibileAction && <td>  
                                 <FontAwesomeIcon icon={faInfoCircle} className="icon-details" onClick={(id) => this.handleEdit(city.cityId)} /> &nbsp;
                                 <FontAwesomeIcon icon={faTrash} className="icon-delete" onClick={(id) => this.handleDelete(city.cityId)} />
-                            </td>  
+                            </td>}
                         </tr>  
                     )}  
                 </tbody>  
