@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReactCrudDemo.Models;
+using System.Threading.Tasks;
 
 namespace ReactCrudDemo
 {
@@ -23,6 +26,21 @@ namespace ReactCrudDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ReactCrudDemoDBContext>();
+
+            services.AddAuthentication(options => {
+                options.DefaultScheme = "Cookies";
+            }).AddCookie("Cookies", options => {
+                options.Cookie.Name = "auth_cookie";
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = redirectContext =>
+                    {
+                        redirectContext.HttpContext.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
             services.AddControllersWithViews();
 
