@@ -11,6 +11,7 @@ import {AddDepartment} from './components/Department/AddDepartment';
 import {RegisterComponent} from './components/Register/Register';
 import {LoginComponent} from './components/Login/Login';
 import {LogoutComponent} from './components/logout/logout';
+import {FetchUsersComponent} from './components/User/FetchUser';
 import './custom.css'
 
 export default class App extends Component {
@@ -32,6 +33,7 @@ export default class App extends Component {
         <Route path='/register' component={RegisterComponent} />
         <Route path='/login' component={LoginComponent} />
         <Route path='/logout' component={LogoutComponent} />
+        <Route path='/fetchuser' component={FetchUsersComponent} />
       </Layout>
     );
   }

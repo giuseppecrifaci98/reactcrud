@@ -13,7 +13,7 @@ export class Home extends Component {
         
         <div className="container">
           <div className="row">
-        <div className="card col-xs-4 col-md-4 col-lg-4 mb-4 col-sm-12 ">
+        <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12 ">
         <div className="card-header">
           Employee
         </div>
@@ -24,7 +24,7 @@ export class Home extends Component {
         </div>
       </div>
       
-      <div className="card col-xs-4 col-md-4 col-lg-4 mb-4 col-sm-12">
+      <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
         <div className="card-header">
           Cities
         </div>
@@ -35,7 +35,7 @@ export class Home extends Component {
         </div>
       </div>
 
-      <div className="card col-xs-4 col-md-4 col-lg-4 mb-4 col-sm-12">
+      <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
         <div className="card-header">
           Cities
         </div>
@@ -43,6 +43,17 @@ export class Home extends Component {
           <h5 className="card-title">Department Management</h5>
           <p className="card-text">Accessing this section you can create, modify and delete Department.</p>
           <Link to="/fetchDepartment" className="btn btn-primary">Go</Link>
+        </div>
+      </div>
+
+      <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
+        <div className="card-header">
+          Users
+        </div>
+        <div className="card-body">
+          <h5 className="card-title">Users Management</h5>
+          <p className="card-text">Accessing this section you can create, modify and delete Users.</p>
+          <Link to="/fetchuser" className="btn btn-primary">Go</Link>
         </div>
       </div>
 

@@ -51,26 +51,26 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
         return (  
             <form onSubmit={(e)=>this.handleSave(e)} >  
                 <div className="form-group row" >  
-                    <input type="hidden" name="userId" value={this.state.userlist.UserId} />  
+                    <input type="hidden" name="userId" value={this.state.userlist.userId} />  
                 </div>  
                 < div className="form-group row" >  
                     <label className=" control-label col-md-12" htmlFor="Username">Username:</label>  
                     <div className="col-md-4">  
-                        <input className="form-control" type="text" name="userName" defaultValue={this.state.userlist.Username} required />  
+                        <input className="form-control" type="text" name="username" defaultValue={this.state.userlist.username} required />  
                     </div>  
                 </div>  
 
                 < div className="form-group row" >  
                     <label className=" control-label col-md-12" htmlFor="Email">Email:</label>  
                     <div className="col-md-4">  
-                        <input className="form-control" type="text" name="email" defaultValue={this.state.userlist.Email} required />  
+                        <input className="form-control" type="text" name="email" defaultValue={this.state.userlist.email} required />  
                     </div>  
                 </div>  
 
                 < div className="form-group row" >  
                     <label className=" control-label col-md-12" htmlFor="Password">Password:</label>  
                     <div className="col-md-4">  
-                        <input className="form-control" type="password" name="password" defaultValue={this.state.userlist.Password} required />  
+                        <input className="form-control" type="password" name="password" defaultValue={this.state.userlist.password} required />  
                     </div>  
                 </div>  
 

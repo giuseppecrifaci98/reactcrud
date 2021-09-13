@@ -1,6 +1,6 @@
 export class UserData {  
-    UserId: number = 0;
-    Username: string;
-    Email:string;
-    Password:string;
+    userId: number = 0;
+    username: string ="";
+    email:string="";
+    password:string="";
 } 
