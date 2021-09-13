@@ -120,10 +120,11 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         if(this.state.src==null)
         profileImageSource=this.state.src;
 
-        if(this.state.title=="Update" && this.state.empData.imageName==null)
+        if(this.state.title=="Update" && this.state.empData.imageFileData==null)
             profileImageSource=this.state.src;
         else{
-            profileImageSource=this.state.empData.imageSrc;
+            console.log(this.state.empData);
+            profileImageSource=`data:image/jpeg;base64,${this.state.empData.imageFileData}`;
             if(this.state.setImg!=null)
                 profileImageSource=this.state.setImg;
         }

@@ -6,6 +6,7 @@ export class EmployeeData {
     departmentName: string = "";  
     imageName: string= "";
     imageSrc: '/img/image_placeholder.png';
+    imageFileData:any;
     imageFile: null;
     departmentId:number;
     cityId:number;

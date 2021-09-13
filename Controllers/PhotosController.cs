@@ -15,32 +15,24 @@ namespace ReactCrudDemo.Controllers
     public class PhotosController : Controller
     {
         private readonly ReactCrudDemoDBContext _context;
-        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public PhotosController(ReactCrudDemoDBContext context, IWebHostEnvironment hostEnvironment)
+        public PhotosController(ReactCrudDemoDBContext context)
         {
             _context = context;
-            this._hostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
         [Route("Photos/{nome}")]
-        public async Task<ActionResult> GetFileSystemStoreObject(string nome)
+        public ActionResult GetImage(string nome)
         {
             if (nome != null)
             {
                 var archivo = _context.Employees.SingleOrDefault(x => x.ImageName == nome);
-
-                var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Photos", archivo.ImageName);
-
-                Byte[] b = System.IO.File.ReadAllBytes(imagePath);
-                return File(b, "image/jpeg");
+                byte[] binary = archivo.ImageFileData;
+                return File(binary, "image/jpeg");
             }
             else
                 return NoContent();
-
         }
-
-
     }
 }

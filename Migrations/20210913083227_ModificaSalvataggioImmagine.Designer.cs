@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactCrudDemo.Models;
 
 namespace ReactCrudDemo.Migrations
 {
     [DbContext(typeof(ReactCrudDemoDBContext))]
-    partial class ReactCrudDemoDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210913083227_ModificaSalvataggioImmagine")]
+    partial class ModificaSalvataggioImmagine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,6 +71,9 @@ namespace ReactCrudDemo.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("DataFiles")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
@@ -77,9 +82,6 @@ namespace ReactCrudDemo.Migrations
                         .HasMaxLength(6)
                         .IsUnicode(false)
                         .HasColumnType("varchar(6)");
-
-                    b.Property<byte[]>("ImageFileData")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(100)");

@@ -47,8 +47,8 @@ namespace ReactCrudDemo.Models
         [NotMapped]
         public IFormFile ImageFile { get; set; }
 
-        [NotMapped]
-        public string ImageSrc { get; set; }
+        [MaxLength]
+        public byte[] ImageFileData { get; set; }
 
     }
 }
