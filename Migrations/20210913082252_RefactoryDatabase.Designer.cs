@@ -9,8 +9,8 @@ using ReactCrudDemo.Models;
 namespace ReactCrudDemo.Migrations
 {
     [DbContext(typeof(ReactCrudDemoDBContext))]
-    [Migration("20210913080905_AggiuntaTabellaUtenti")]
-    partial class AggiuntaTabellaUtenti
+    [Migration("20210913082252_RefactoryDatabase")]
+    partial class RefactoryDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,28 +95,6 @@ namespace ReactCrudDemo.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Employee");
-                });
-
-            modelBuilder.Entity("ReactCrudDemo.Models.User", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ReactCrudDemo.Models.Employee", b =>

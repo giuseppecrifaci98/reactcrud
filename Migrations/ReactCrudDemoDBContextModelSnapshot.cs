@@ -95,28 +95,6 @@ namespace ReactCrudDemo.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("ReactCrudDemo.Models.User", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("ReactCrudDemo.Models.Employee", b =>
                 {
                     b.HasOne("ReactCrudDemo.Models.City", "City")
