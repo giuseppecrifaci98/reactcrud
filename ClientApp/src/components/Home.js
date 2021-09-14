@@ -1,15 +1,36 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
-export class Home extends Component {
-  static displayName = Home.name;
+export class Home extends Component{
+
+  constructor(){
+    super();
+    this.state={
+      username:null,
+      isAuthenticate:false
+    };
+  }
+
+  componentDidMount(){
+    this.getUserLogged();
+  }
+
+   getUserLogged(){
+    axios.post('api/login/CheckLogin') .then(responseJson=>{
+        this.setState({username:responseJson.data,isAuthenticate:true})
+    }).catch(responseErro=>{
+       this.setState({isAuthenticate:false});
+       });
+  }
 
   render () {
     return (
       <div>
-        <h1>Hello, world!</h1>
+        <h1>Hello, world {this.state.username}</h1>
         <p>Welcome in this application</p>
         <p>This application allow that Employee management (CRUD) and of Cities.</p>
+        
         
         <div className="container">
           <div className="row">
@@ -46,6 +67,7 @@ export class Home extends Component {
         </div>
       </div>
 
+{this.state.isAuthenticate &&
       <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
         <div className="card-header">
           Users
@@ -56,6 +78,7 @@ export class Home extends Component {
           <Link to="/fetchuser" className="btn btn-primary">Go</Link>
         </div>
       </div>
+  }
 
       </div>
         </div>

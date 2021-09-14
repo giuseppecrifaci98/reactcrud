@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReactCrudDemo.Models;
 using System;
@@ -10,7 +11,7 @@ using System.Web.Helpers;
 
 namespace ReactCrudDemo.Controllers
 {
-    public class LoginController : ControllerBase
+    public class LoginController : Controller
     {
 
         private readonly ReactCrudDemoDBContext _context;
@@ -30,9 +31,9 @@ namespace ReactCrudDemo.Controllers
                 user.Password = hash;
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-                return Ok(true);
+                return Ok(Json("User created successfully"));
             }
-            return Ok(false);
+            return Ok(Json("Already registered user"));
         }
 
         [HttpPost]
@@ -40,7 +41,8 @@ namespace ReactCrudDemo.Controllers
         public async Task<IActionResult> Login([FromForm] User user)
         {
             var users = _context.Users.FirstOrDefault(x => x.Email == user.Email);
-                if (users!=null) {
+            if (users != null)
+            {
                 if (Crypto.VerifyHashedPassword(users.Password, user.Password))
                 {
                     var claimsIdentity = new ClaimsIdentity(new[]
@@ -49,15 +51,15 @@ namespace ReactCrudDemo.Controllers
                     }, "Cookies");
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await Request.HttpContext.SignInAsync("Cookies", claimsPrincipal);
-                    return Ok(true);
+                    return Ok(Json("login success"));
                 }
                 else
                 {
-                    return Ok(false);
+                    return Ok(Json("the password not matched"));
                 }
             }
             else
-                return BadRequest();
+                return Ok(Json("User not exists"));
         }
 
         [HttpPost]
@@ -69,7 +71,25 @@ namespace ReactCrudDemo.Controllers
                 await HttpContext.SignOutAsync();
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Login/CheckLogin")]
+        public async Task<ActionResult> CheckLogin()
+       {
+            try
+            {
+                var s = HttpContext.User.Claims.ToList();
+                if (s.Count == 0)
+                    return StatusCode(401);
+                else
+                    return Ok(s[0].Value);
+            }
+            catch (Exception)
             {
                 return StatusCode(500);
             }

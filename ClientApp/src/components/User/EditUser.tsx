@@ -1,13 +1,8 @@
 import * as React from 'react'; 
 import {RouteComponentProps } from 'react-router';
-import {Link} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { UserData } from '../../class/UserData';
 import '../../custom.css';
 import axios from 'axios';
-
 
 interface EditUserDataState{
     title:string;
@@ -16,7 +11,6 @@ interface EditUserDataState{
     checkExistUser: boolean;
     checkPassword?:boolean;
 }
-
 
 export class EditUsersComponent extends React.Component<RouteComponentProps<{}>, EditUserDataState> { 
     constructor(props: RouteComponentProps<{}>) {
@@ -55,7 +49,7 @@ export class EditUsersComponent extends React.Component<RouteComponentProps<{}>,
     private EditUser(data:FormData){
         axios.put(`api/User/Edit`,data)
         .then(res => {
-             if(res.data==true)
+             if(res.data['value']=="Updated")
                 this.props.history.push("/fetchuser");
         });
     }

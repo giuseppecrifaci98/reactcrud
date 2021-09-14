@@ -38,7 +38,7 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
     
             axios.post('api/login/Register',data)
             .then(responseJson=>{
-                if(!responseJson.data)
+                if(responseJson.data['value']=="Already registered user")
                 this.setState({checkExistUser: true});
                 else{
                     this.setState({checkExistUser: false});

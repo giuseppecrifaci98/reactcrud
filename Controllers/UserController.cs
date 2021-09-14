@@ -13,7 +13,7 @@ using System.Web.Helpers;
 
 namespace ReactCrudDemo.Controllers
 {
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private readonly ReactCrudDemoDBContext _context;
         public UserController(ReactCrudDemoDBContext context)
@@ -79,7 +79,7 @@ namespace ReactCrudDemo.Controllers
                 }
             }
 
-            return Ok(true);
+            return Ok(Json("Updated"));
         }
 
         private bool UserModelExists(int id)

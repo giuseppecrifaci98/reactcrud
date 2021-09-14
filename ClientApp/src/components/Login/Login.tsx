@@ -39,12 +39,12 @@ export class LoginComponent extends React.Component<RouteComponentProps<{}>, Fet
         const data = new FormData(e.target);  
             axios.post('api/login/Login',data)
             .then(responseJson=>{
-                if(!responseJson.data)
+                if(responseJson.data['value']=="the password not matched" || responseJson.data['value']==="User not exists")
                     this.setState({checkUserLogged: true});
-                 else{
+                 else if(responseJson.data['value']=="login success"){
                      this.setState({checkUserLogged: false});
                      localStorage.setItem('login', "true");
-                     window.location.href='/fetchemployee';
+                     window.location.href='/';
                  }
             });
             

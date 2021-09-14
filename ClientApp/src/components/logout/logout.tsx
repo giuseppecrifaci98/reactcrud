@@ -36,7 +36,7 @@ export class LogoutComponent extends React.Component<RouteComponentProps<{}>, Fe
             window.location.href='/';
         });
     } else
-        this.props.history.push('/fetchemployee');
+        this.props.history.push('/');
     }
 
     private renderCreateForm(){
