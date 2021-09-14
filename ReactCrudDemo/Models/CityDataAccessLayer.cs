@@ -7,7 +7,7 @@ namespace ReactCrudDemo.Models
 {
     public class CityDataAccessLayer
     {
-        private readonly IReactCrudDemoContext db = new ReactCrudDemoDBContext();
+        private readonly ReactCrudDemoDBContext db = new ReactCrudDemoDBContext();
 
         public IEnumerable<City> GetCities()
         {
@@ -80,10 +80,19 @@ namespace ReactCrudDemo.Models
         {
             try
             {
+                var result = 0;
+
                 City city = db.Cities.Find(id);
-                db.Cities.Remove(city);
-                db.SaveChanges();
-                return 1;
+                if (city == null)
+                    result = 0;
+                else
+                {
+                    db.Cities.Remove(city);
+                    db.SaveChanges();
+                    result = 1;
+                }
+                return result;
+
             }
             catch
             {

@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace ReactCrudDemo.Models
 {
-    public partial class ReactCrudDemoDBContext : DbContext,IReactCrudDemoContext
+    public partial class ReactCrudDemoDBContext : DbContext, IReactCrudDemoContext
     {
-        private IConfigurationRoot _config;
+        private readonly IConfigurationRoot _config;
         public ReactCrudDemoDBContext()
         {
         }
