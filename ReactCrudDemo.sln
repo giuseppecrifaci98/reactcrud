@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactCrudDemo", "ReactCrudDemo.csproj", "{ED5EE1A7-9B4C-4723-A643-90A0AFD5EF98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactCrudDemoTests", "ReactCrudDemoTests\ReactCrudDemoTests.csproj", "{5DFF6EC5-720E-49D8-A485-1BD761BA613C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactCrudDemoTests", "..\ReactCrudDemoTests\ReactCrudDemoTests.csproj", "{AAF97D2D-6249-4A72-9E52-10BEAAF4684F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{ED5EE1A7-9B4C-4723-A643-90A0AFD5EF98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED5EE1A7-9B4C-4723-A643-90A0AFD5EF98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED5EE1A7-9B4C-4723-A643-90A0AFD5EF98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DFF6EC5-720E-49D8-A485-1BD761BA613C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DFF6EC5-720E-49D8-A485-1BD761BA613C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DFF6EC5-720E-49D8-A485-1BD761BA613C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DFF6EC5-720E-49D8-A485-1BD761BA613C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAF97D2D-6249-4A72-9E52-10BEAAF4684F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF97D2D-6249-4A72-9E52-10BEAAF4684F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF97D2D-6249-4A72-9E52-10BEAAF4684F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF97D2D-6249-4A72-9E52-10BEAAF4684F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

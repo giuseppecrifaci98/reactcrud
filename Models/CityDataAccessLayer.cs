@@ -7,7 +7,7 @@ namespace ReactCrudDemo.Models
 {
     public class CityDataAccessLayer
     {
-        private readonly ReactCrudDemoDBContext db = new ReactCrudDemoDBContext();
+        private readonly IReactCrudDemoContext db = new ReactCrudDemoDBContext();
 
         public IEnumerable<City> GetCities()
         {
@@ -50,7 +50,8 @@ namespace ReactCrudDemo.Models
         {
             try
             {
-                db.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                //db.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                db.MarkAsModified(city);
                 db.SaveChanges();
                 return 1;
             }

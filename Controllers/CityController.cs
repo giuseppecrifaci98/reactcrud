@@ -10,7 +10,13 @@ namespace ReactCrudDemo.Controllers
 {
     public class CityController : Controller
     {
-        private readonly CityDataAccessLayer objcity = new CityDataAccessLayer();
+         private readonly CityDataAccessLayer objcity = new CityDataAccessLayer();
+        private IReactCrudDemoContext db = new ReactCrudDemoDBContext();
+
+        public CityController(IReactCrudDemoContext context)
+        {
+            db = context;
+        }
 
         [HttpGet]
         [Route("api/City/Index")]

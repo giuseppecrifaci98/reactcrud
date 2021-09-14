@@ -1,13 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
 namespace ReactCrudDemo.Models
 {
-    public partial class ReactCrudDemoDBContext : DbContext
+    public partial class ReactCrudDemoDBContext : DbContext,IReactCrudDemoContext
     {
         private IConfigurationRoot _config;
         public ReactCrudDemoDBContext()
@@ -24,6 +22,10 @@ namespace ReactCrudDemo.Models
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public void MarkAsModified(City item)
+        {
+            Entry(item).State = EntityState.Modified;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
