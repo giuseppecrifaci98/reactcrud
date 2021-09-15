@@ -34,10 +34,29 @@ export class AddDepartment extends React.Component<RouteComponentProps<{}>, Fetc
     </div>;  
     }
 
-    private DepartmentDetails(id){
-        axios.get(`api/Department/Details/${id}`)
+    private async DepartmentDetails(id){
+        await axios.get(`api/Department/Details/${id}`)
         .then(res=>{
          this.setState({ title: "Edit", loading: false, departmentList: res.data });  
+        });
+    }
+
+    private async DepartmentEdit(data:FormData){
+        await axios.put(`api/Department/Edit`, data)
+        .then(res => {
+            this.props.history.push("/fetchDepartment");  
+        });
+    }
+
+    private async DepartmentCreate(data:FormData){
+       await axios.post('api/Department/Create',data)
+        .then(responseJson=>{
+            if(responseJson.data==0)
+            this.setState({checkExistDepartment: true});
+            else{
+                this.setState({checkExistDepartment: false});
+            this.props.history.push("/fetchDepartment");
+            }
         });
     }
 
@@ -50,24 +69,11 @@ export class AddDepartment extends React.Component<RouteComponentProps<{}>, Fetc
         e.preventDefault();  
         const data = new FormData(e.target);  
 
-        if (this.state.departmentList.departmentId) {  
-            axios.put(`api/Department/Edit`, data)
-            .then(res => {
-                this.props.history.push("/fetchDepartment");  
-            });
-        }   
-    
-        else {  
-            axios.post('api/Department/Create',data)
-            .then(responseJson=>{
-                if(responseJson.data==0)
-                this.setState({checkExistDepartment: true});
-                else{
-                    this.setState({checkExistDepartment: false});
-                this.props.history.push("/fetchDepartment");
-                }
-            });
-        }
+        if (this.state.departmentList.departmentId) 
+            this.DepartmentEdit(data);
+        else
+            this.DepartmentCreate(data);
+
     }
 
     private renderCreateForm(){

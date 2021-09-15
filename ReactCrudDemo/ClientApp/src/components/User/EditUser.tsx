@@ -39,15 +39,15 @@ export class EditUsersComponent extends React.Component<RouteComponentProps<{}>,
     </div>;  
     }
 
-    private EditUserDetails(id){
-        axios.get(`api/User/Details/${id}`)
+    private async EditUserDetails(id){
+       await axios.get(`api/User/Details/${id}`)
         .then(res=>{
            this.setState({ title: "Update", loading: false, userlist: res.data });  
         })
     }
 
-    private EditUser(data:FormData){
-        axios.put(`api/User/Edit`,data)
+    private async EditUser(data:FormData){
+        await axios.put(`api/User/Edit`,data)
         .then(res => {
              if(res.data['value']=="Updated")
                 this.props.history.push("/fetchuser");

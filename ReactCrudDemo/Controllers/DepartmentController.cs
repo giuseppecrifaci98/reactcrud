@@ -13,12 +13,9 @@ namespace ReactCrudDemo.Controllers
     public class DepartmentController : Controller
     {
         private readonly ReactCrudDemoDBContext _context;
-        private readonly IWebHostEnvironment _hostEnvironment;
-
-        public DepartmentController(ReactCrudDemoDBContext context, IWebHostEnvironment hostEnvironment)
+        public DepartmentController(ReactCrudDemoDBContext context)
         {
             _context = context;
-            this._hostEnvironment = hostEnvironment;
         }
 
         [HttpGet]
@@ -37,7 +34,7 @@ namespace ReactCrudDemo.Controllers
         [HttpPost]
         [Route("api/Department/Create")]
 
-        public async Task<ActionResult<Employee>> Create([FromForm] Department dep)
+        public async Task<ActionResult<Department>> Create([FromForm] Department dep)
         {
             var result = _context.Departments.Where(x => x.DepartmentName == dep.DepartmentName).FirstOrDefault();
             if (result == null)
@@ -46,7 +43,8 @@ namespace ReactCrudDemo.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(Json(true));
             }
-            return Ok(Json(false));
+            else
+                return Ok(Json(false));
         }
 
         [Authorize]
@@ -72,7 +70,7 @@ namespace ReactCrudDemo.Controllers
         [Authorize]
         [HttpPut]
         [Route("api/Department/Edit")]
-        public async Task<IActionResult> Edit([FromForm] Department dep)
+        public async Task<ActionResult<Department>> Edit([FromForm] Department dep)
         {
       
             _context.Entry(dep).State = EntityState.Modified;
@@ -96,9 +94,9 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json("Updated"));
         }
 
-        private bool DepartmentModelExists(int id)
+        public bool DepartmentModelExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Departments.Any(e => e.DepartmentId == id);
         }
 
         [Authorize]

@@ -34,20 +34,23 @@ export class LoginComponent extends React.Component<RouteComponentProps<{}>, Fet
         this.props.history.push("");  
     }
 
+    private async Login(data:FormData){
+        await axios.post('api/login/Login',data)
+        .then(responseJson=>{
+            if(responseJson.data['value']=="User and password invalid o user not exists")
+                this.setState({checkUserLogged: true});
+             else if(responseJson.data['value']=="login success"){
+                 this.setState({checkUserLogged: false});
+                 localStorage.setItem('login', "true");
+                 window.location.href='/';
+             }
+        });
+    }
+
     private handleSave(e){
         e.preventDefault();  
         const data = new FormData(e.target);  
-            axios.post('api/login/Login',data)
-            .then(responseJson=>{
-                if(responseJson.data['value']=="the password not matched" || responseJson.data['value']==="User not exists")
-                    this.setState({checkUserLogged: true});
-                 else if(responseJson.data['value']=="login success"){
-                     this.setState({checkUserLogged: false});
-                     localStorage.setItem('login', "true");
-                     window.location.href='/';
-                 }
-            });
-            
+          this.Login(data);
     }
 
     private renderCreateForm(){
@@ -75,6 +78,8 @@ export class LoginComponent extends React.Component<RouteComponentProps<{}>, Fet
                         <input className="form-control" type="password" name="password" defaultValue={this.state.userlist.password} required />  
                     </div>  
                 </div>  
+
+                {this.state.checkUserLogged ? <p className="text-danger">User and password invalid o user not exists</p>:''}
 
                 <div className="form-group mb-2 mt-2">  
                     <button type="submit" className="btn btn-success">Login</button>  &nbsp;

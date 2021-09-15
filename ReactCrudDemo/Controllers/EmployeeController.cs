@@ -106,7 +106,7 @@ namespace ReactCrudDemo.Controllers
         [Authorize]
         [HttpPut]
         [Route("api/Employee/Edit")]
-        public async Task<IActionResult> Edit([FromForm] Employee employe)
+        public async Task<ActionResult<Employee>> Edit([FromForm] Employee employe)
         {
             if (employe.ImageFile != null)
             {
@@ -161,7 +161,7 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json("Updated"));
         }
 
-        private bool EmployeeModelExists(int id)
+        public bool EmployeeModelExists(int id)
         {
             return _context.Employees.Any(e => e.EmployeeId == id);
         }

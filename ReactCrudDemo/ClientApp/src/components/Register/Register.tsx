@@ -32,19 +32,22 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
         this.props.history.push("");  
     }
 
+    private async Register(data:FormData){
+        await axios.post('api/login/Register',data)
+        .then(responseJson=>{
+            if(responseJson.data['value']=="Already registered user")
+            this.setState({checkExistUser: true});
+            else{
+                this.setState({checkExistUser: false});
+                this.props.history.push("/login");
+            }
+        });
+    }
+
     private handleSave(e){
         e.preventDefault();  
         const data = new FormData(e.target);  
-    
-            axios.post('api/login/Register',data)
-            .then(responseJson=>{
-                if(responseJson.data['value']=="Already registered user")
-                this.setState({checkExistUser: true});
-                else{
-                    this.setState({checkExistUser: false});
-                    this.props.history.push("/login");
-                }
-            });
+        this.Register(data);
     }
 
     private renderCreateForm(){

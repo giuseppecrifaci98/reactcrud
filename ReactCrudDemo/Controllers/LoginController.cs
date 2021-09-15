@@ -36,30 +36,40 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json("Already registered user"));
         }
 
-        [HttpPost]
-        [Route("api/login/Login")]
-        public async Task<IActionResult> Login([FromForm] User user)
+        public bool VerifyLogin(User user)
         {
+            bool check = false;
             var users = _context.Users.FirstOrDefault(x => x.Email == user.Email);
             if (users != null)
             {
                 if (Crypto.VerifyHashedPassword(users.Password, user.Password))
-                {
-                    var claimsIdentity = new ClaimsIdentity(new[]
+                    check = true;
+                else
+                    check = false;
+
+            }
+            else
+                check = false;
+            return check;
+        }
+
+        [HttpPost]
+        [Route("api/login/Login")]
+        public async Task<ActionResult<User>> Login([FromForm] User user)
+        {
+            if (VerifyLogin(user))
+            {
+                var claimsIdentity = new ClaimsIdentity(new[]
                     {
                         new Claim(ClaimTypes.Email, user.Email),
                     }, "Cookies");
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                    await Request.HttpContext.SignInAsync("Cookies", claimsPrincipal);
-                    return Ok(Json("login success"));
-                }
-                else
-                {
-                    return Ok(Json("the password not matched"));
-                }
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await Request.HttpContext.SignInAsync("Cookies", claimsPrincipal);
+                return Ok(Json("login success"));
             }
             else
-                return Ok(Json("User not exists"));
+                return Ok(Json("User and password invalid o user not exists"));
+
         }
 
         [HttpPost]
@@ -79,17 +89,20 @@ namespace ReactCrudDemo.Controllers
 
         [HttpPost]
         [Route("api/Login/CheckLogin")]
-        public async Task<ActionResult> CheckLogin()
-       {
+        public async Task<ActionResult<User>> CheckLogin()
+        {
             try
             {
-                var s = HttpContext.User.Claims.ToList();
-                if (s.Count == 0)
+                if (HttpContext == null)
                     return StatusCode(401);
-                else
-                    return Ok(s[0].Value);
+
+                if (HttpContext != null && HttpContext.User.Claims.Count() > 0)
+                return Ok(HttpContext.User.Claims.ToList()[0].Value);
+
+                return null;
+
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return StatusCode(500);
             }

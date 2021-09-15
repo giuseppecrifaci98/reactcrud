@@ -34,22 +34,22 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
     </div>;  
     }
 
-    private CityDetails(id){
-        axios.get(`api/City/Details/${id}`)
+    private async CityDetails(id){
+        await axios.get(`api/City/Details/${id}`)
         .then(res=>{
          this.setState({ title: "Edit", loading: false, cityList: res.data });  
         });
     }
 
-    private EditCity(data:FormData){
-        axios.put(`api/City/Edit`, data)
+    private async EditCity(data:FormData){
+       await axios.put(`api/City/Edit`, data)
         .then(res => {
             this.props.history.push("/fetchcity");  
         });
     }
 
-    private CreateCity(data:FormData){
-        axios.post('api/City/Create',data)
+    private async CreateCity(data:FormData){
+       await axios.post('api/City/Create',data)
         .then(responseJson=>{
             if(responseJson.data==0)
             this.setState({checkExistCity: true});

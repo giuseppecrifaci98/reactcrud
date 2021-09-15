@@ -35,14 +35,14 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
     </div>;  
     }
 
-    private getDepartmentList(){
-        axios.get('api/Department/Index').then(res =>  {
+    private async getDepartmentList(){
+        await axios.get('api/Department/Index').then(res =>  {
             this.setState({ depList: res.data, loading: false });  
         });
     }
 
-    private DeleteDepartment(id){
-        axios.delete(`api/Department/Delete/${id}`).then(res => {
+    private async DeleteDepartment(id){
+       await axios.delete(`api/Department/Delete/${id}`).then(res => {
             this.setState({depList: this.state.depList.filter((rec) => { 
                 return (rec.departmentId != id);  
                  })  

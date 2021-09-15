@@ -18,10 +18,11 @@ export class Home extends Component{
 
    getUserLogged(){
     axios.post('api/login/CheckLogin') .then(responseJson=>{
-        this.setState({username:responseJson.data,isAuthenticate:true})
-    }).catch(responseErro=>{
-       this.setState({isAuthenticate:false});
-       });
+      if(responseJson.status==204)
+        this.setState({isAuthenticate:false})
+        else
+        this.setState({username:responseJson.data, isAuthenticate:true})
+    });
   }
 
   render () {

@@ -58,7 +58,7 @@ namespace ReactCrudDemo.Controllers
         [Authorize]
         [HttpPut]
         [Route("api/User/Edit")]
-        public async Task<IActionResult> Edit([FromForm] User user)
+        public async Task<ActionResult<User>> Edit([FromForm] User user)
         {
             user.Password= Crypto.HashPassword(user.Password);
             _context.Entry(user).State = EntityState.Modified;
@@ -82,9 +82,9 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json("Updated"));
         }
 
-        private bool UserModelExists(int id)
+        public bool UserModelExists(int id)
         {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Users.Any(e => e.UserId == id);
         }
 
         [Authorize]

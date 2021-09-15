@@ -34,14 +34,14 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     </div>;  
     }
 
-    private getCity(){
-        axios.get('api/City/Index').then(res =>  {
+    private async getCity(){
+        await axios.get('api/City/Index').then(res =>  {
             this.setState({ cityList: res.data, loading: false });  
         });
     }
 
-    private DeleteCity(id){
-        axios.delete(`api/City/Delete/${id}`).then(res => {
+    private async DeleteCity(id){
+        await axios.delete(`api/City/Delete/${id}`).then(res => {
             this.setState({cityList: this.state.cityList.filter((rec) => { 
                 return (rec.cityId != id);  
                  })  

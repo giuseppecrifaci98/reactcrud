@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReactCrudDemo.Models;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,19 @@ namespace ReactCrudDemo.Controllers
     {
         private readonly CityDataAccessLayer objcity = new CityDataAccessLayer();
 
+        private readonly ReactCrudDemoDBContext _context = new ReactCrudDemoDBContext();
+
         [HttpGet]
         [Route("api/City/Index")]
-        public IEnumerable<City> Index()
+        public async Task<ActionResult<IEnumerable<City>>> Index()
         {
-            return objcity.GetCities();
+            return await _context.Cities
+                .Select(x => new City()
+                {
+                  CityId=x.CityId,
+                   CityName=x.CityName,
+                   Employees=x.Employees
+                }).ToListAsync();
         }
 
         [Authorize]

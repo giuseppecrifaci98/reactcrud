@@ -36,8 +36,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     </div>;  
     }
 
-    private getEmployee(){
-        axios.get('api/Employee/Index').then(res =>  {
+    private async getEmployee(){
+       await axios.get('api/Employee/Index').then(res =>  {
             this.setState({ empList: res.data, loading: false }); 
         }).catch(err=> {
             this.setState({empList: [], loading: false, errorMessage:"To see this section you must be authenticated. If you are not authenticated try to login" }); 
@@ -49,8 +49,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     }
 
 
-    private DeleteEmployee(id:number){
-        axios.delete(`api/Employee/Delete/${id}`).then(res => {
+    private async DeleteEmployee(id:number){
+       await axios.delete(`api/Employee/Delete/${id}`).then(res => {
             this.setState({empList: this.state.empList.filter((rec) => { 
                 return (rec.employeeId != id);  
                  })  

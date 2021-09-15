@@ -27,15 +27,19 @@ export class LogoutComponent extends React.Component<RouteComponentProps<{}>, Fe
     </div>;  
     }
 
-    componentDidMount(){
-        if (window.confirm("Vuoi effettuare il logout?")){
-        axios.post('api/login/Logout')
+    private async Logout(){
+       await axios.post('api/login/Logout')
         .then(responseJson=>{
           if(responseJson.data=='')
             localStorage.removeItem('login');
             window.location.href='/';
         });
-    } else
+    }
+
+    componentDidMount(){
+        if (window.confirm("Vuoi effettuare il logout?"))
+            this.Logout(); 
+        else
         this.props.history.push('/');
     }
 

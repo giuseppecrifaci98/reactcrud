@@ -32,22 +32,22 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
 
     }
 
-    private EmployeeDetails(id){
-        axios.get(`api/Employee/Details/${id}`)
+    private async EmployeeDetails(id){
+       await axios.get(`api/Employee/Details/${id}`)
         .then(res=>{
            this.setState({ title: "Update", loading: false, empData: res.data });  
         })
     }
 
-    private  getCity(){
-        axios.get(`api/City/Index`)
+    private async getCity(){
+        await axios.get(`api/City/Index`)
         .then(res => {
             this.setState({cityList:res.data})
         });
     }
 
-    private getDepartment(){
-        axios.get(`api/Department/Index`)
+    private async getDepartment(){
+       await axios.get(`api/Department/Index`)
         .then(res=>{
             this.setState({departmentData:res.data});
         });
@@ -72,16 +72,16 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
         this.getDepartment();
     }
 
-    private EditEmployee(data:FormData){
-        axios.put(`api/Employee/Edit`,data)
+    private async EditEmployee(data:FormData){
+        await axios.put(`api/Employee/Edit`,data)
         .then(res => {
              if(res.data['value']=="Updated")
                 this.props.history.push("/fetchemployee");
         });
     }
 
-    private CreateEmployee(data:FormData){
-        axios.post('api/Employee/Create',data)
+    private async CreateEmployee(data:FormData){
+       await axios.post('api/Employee/Create',data)
         .then(responseJson=>{
             let checkUser = responseJson.data['value'];
             if(checkUser){

@@ -20,8 +20,8 @@ export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>
         this.state = { userlist: [], loading: true }; 
     }
 
-    private getUsers(){
-        axios.get('api/User/Index').then(res =>  {
+    private async getUsers(){
+       await axios.get('api/User/Index').then(res =>  {
             this.setState({ userlist: res.data, loading: false }); 
         }).catch(err=> {
             this.setState({userlist: [], loading: false, errorMessage:"To see this section you must be authenticated. If you are not authenticated try to login" }); 
