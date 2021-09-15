@@ -7,6 +7,9 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { DepartmentData } from '../../class/DepartmentData';
 import '../../custom.css';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchDepartmentDataState{
     depList: DepartmentData[];
@@ -48,6 +51,8 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
                  })  
             });  
           });
+
+          toast.success("Department deleted successfully");
     }
 
     componentDidMount(){

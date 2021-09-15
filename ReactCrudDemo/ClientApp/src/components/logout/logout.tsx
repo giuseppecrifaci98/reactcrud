@@ -2,6 +2,9 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { UserData } from '../../class/UserData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchUserDataDataState{
     title:string;
@@ -30,9 +33,11 @@ export class LogoutComponent extends React.Component<RouteComponentProps<{}>, Fe
     private async Logout(){
        await axios.post('api/login/Logout')
         .then(responseJson=>{
-          if(responseJson.data=='')
+          if(responseJson.data==''){
             localStorage.removeItem('login');
             window.location.href='/';
+            toast.success("Logout successfu");
+    }
         });
     }
 

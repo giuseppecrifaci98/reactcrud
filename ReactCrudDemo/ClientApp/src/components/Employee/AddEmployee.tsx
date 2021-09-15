@@ -4,6 +4,9 @@ import { CityData } from '../../class/CityData';
 import { EmployeeData } from '../../class/EmployeeData';
 import { DepartmentData } from '../../class/DepartmentData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface AddEmployeeDataState{
     title:string;
@@ -78,6 +81,7 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
              if(res.data['value']=="Updated")
                 this.props.history.push("/fetchemployee");
         });
+        toast.success("Employee changed successfully");
     }
 
     private async CreateEmployee(data:FormData){
@@ -87,8 +91,11 @@ export class AddEmployee extends React.Component<RouteComponentProps<{}>, AddEmp
             if(checkUser){
                     this.setState({checkExistUser: false});
                 this.props.history.push("/fetchemployee");
-            }else
+                toast.success("Employee created successfully");
+            }else{
             this.setState({checkExistUser:true});
+            toast.error("Employee already exists");
+            }
         });
     }
 

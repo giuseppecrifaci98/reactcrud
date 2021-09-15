@@ -3,6 +3,9 @@ import {RouteComponentProps } from 'react-router';
 import { UserData } from '../../class/UserData';
 import '../../custom.css';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface EditUserDataState{
     title:string;
@@ -52,6 +55,7 @@ export class EditUsersComponent extends React.Component<RouteComponentProps<{}>,
              if(res.data['value']=="Updated")
                 this.props.history.push("/fetchuser");
         });
+        toast.success("Users changed successfully");
     }
 
     private handleSave(event) {  

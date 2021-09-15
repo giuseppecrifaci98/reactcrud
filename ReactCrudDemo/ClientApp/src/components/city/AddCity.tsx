@@ -2,6 +2,9 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { CityData } from '../../class/CityData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchCityDataState{
     title:string;
@@ -46,15 +49,19 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
         .then(res => {
             this.props.history.push("/fetchcity");  
         });
+        toast.success("City changed successfully")
     }
 
     private async CreateCity(data:FormData){
        await axios.post('api/City/Create',data)
         .then(responseJson=>{
-            if(responseJson.data==0)
+            if(responseJson.data==0){
             this.setState({checkExistCity: true});
+            toast.success('The city already exist');
+            }
             else{
                 this.setState({checkExistCity: false});
+                toast.success('City happened successfully');
             this.props.history.push("/fetchcity");
             }
         });

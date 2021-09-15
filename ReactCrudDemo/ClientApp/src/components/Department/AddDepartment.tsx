@@ -2,6 +2,9 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { DepartmentData } from '../../class/DepartmentData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchDepartmentDataState{
     title:string;
@@ -46,16 +49,20 @@ export class AddDepartment extends React.Component<RouteComponentProps<{}>, Fetc
         .then(res => {
             this.props.history.push("/fetchDepartment");  
         });
+        toast.success("Department edited successfully");
     }
 
     private async DepartmentCreate(data:FormData){
        await axios.post('api/Department/Create',data)
         .then(responseJson=>{
-            if(responseJson.data==0)
+            if(responseJson.data==0){
             this.setState({checkExistDepartment: true});
+            toast.error("Department already exist");}
+            
             else{
                 this.setState({checkExistDepartment: false});
             this.props.history.push("/fetchDepartment");
+            toast.success("Department creted successfully");
             }
         });
     }

@@ -2,6 +2,9 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { UserData } from '../../class/UserData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchUserDataDataState{
     title:string;
@@ -37,9 +40,12 @@ export class LoginComponent extends React.Component<RouteComponentProps<{}>, Fet
     private async Login(data:FormData){
         await axios.post('api/login/Login',data)
         .then(responseJson=>{
-            if(responseJson.data['value']=="User and password invalid o user not exists")
+            if(responseJson.data['value']=="User and password invalid o user not exists"){
+                toast.error('User and password invalid o user not exists');
                 this.setState({checkUserLogged: true});
+            }
              else if(responseJson.data['value']=="login success"){
+                toast.success('Login successful');
                  this.setState({checkUserLogged: false});
                  localStorage.setItem('login', "true");
                  window.location.href='/';

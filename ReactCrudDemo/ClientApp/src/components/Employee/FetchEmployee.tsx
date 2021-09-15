@@ -7,6 +7,9 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { EmployeeData } from '../../class/EmployeeData';
 import '../../custom.css';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchEmployeeDataState{
     empList: EmployeeData[];
@@ -55,7 +58,8 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
                 return (rec.employeeId != id);  
                  })  
             });  
-          })
+          });
+          toast.success("Employee deleted successfully");
     }
  
      private handleDelete(id: number) {  

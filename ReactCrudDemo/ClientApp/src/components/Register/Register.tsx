@@ -2,6 +2,10 @@ import * as React from 'react';
 import {RouteComponentProps } from 'react-router';
 import { UserData } from '../../class/UserData';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastBody } from 'reactstrap';
+toast.configure();
 
 interface FetchUserDataDataState{
     title:string;
@@ -35,10 +39,13 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
     private async Register(data:FormData){
         await axios.post('api/login/Register',data)
         .then(responseJson=>{
-            if(responseJson.data['value']=="Already registered user")
+            if(responseJson.data['value']=="Already registered user"){
             this.setState({checkExistUser: true});
+            toast.error("Already registered user");
+            }
             else{
                 this.setState({checkExistUser: false});
+                toast.error("User created successfully");
                 this.props.history.push("/login");
             }
         });

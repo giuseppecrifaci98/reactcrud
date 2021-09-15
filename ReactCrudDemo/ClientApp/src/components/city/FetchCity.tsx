@@ -7,6 +7,9 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { CityData } from '../../class/CityData';
 import '../../custom.css';
 import axios from 'axios';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 interface FetchCityDataState{
     cityList: CityData[];
@@ -46,6 +49,7 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
                 return (rec.cityId != id);  
                  })  
             });  
+            toast.success("City successfully eliminated");
           });
     }
 
