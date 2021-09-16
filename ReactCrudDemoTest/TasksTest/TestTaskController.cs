@@ -77,7 +77,7 @@ namespace ReactCrudDemoTest.TasksTest
         public async Task Edit()
         {
             var controller = new TasksController(_context);
-            var items = new Tasks() { TasksName = "Task edit di test", UserId = 3, TaskStatusId = 2, TasksId=1 };
+            var items = new Tasks() { TasksName = "Task edit di test", UserEmail="mario.rossi@email.it", TaskStatusId = 2, TasksId=1 };
             var resultController = await controller.Edit(items);
             var result = resultController.Result as OkObjectResult;
             var convertJsonResult = JsonSerializer.Serialize(result.Value);

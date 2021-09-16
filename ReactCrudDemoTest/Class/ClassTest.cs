@@ -18,8 +18,4 @@ namespace ReactCrudDemoTest.Class
         public int? StatusCode { get; set; }
         public string Value { get; set; }
     }
-    public class JsonConvertClassError
-    {
-        public int? StatusCode { get; set; }
-    }
 }

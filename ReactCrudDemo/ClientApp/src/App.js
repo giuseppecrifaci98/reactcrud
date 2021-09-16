@@ -4,30 +4,30 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchEmployee } from './components/Employee/FetchEmployee';
 import { AddEmployee } from './components/Employee/AddEmployee';
-import {FetchCity} from './components/city/FetchCity';
+import { FetchCity } from './components/city/FetchCity';
 import { AddCity } from './components/city/AddCity';
-import {FetchDepartment} from './components/Department/FetchDepartment';
-import {AddDepartment} from './components/Department/AddDepartment';
-import {RegisterComponent} from './components/Register/Register';
-import {LoginComponent} from './components/Login/Login';
-import {LogoutComponent} from './components/logout/logout';
-import {FetchUsersComponent} from './components/User/FetchUser';
+import { FetchDepartment } from './components/Department/FetchDepartment';
+import { AddDepartment } from './components/Department/AddDepartment';
+import { RegisterComponent } from './components/Register/Register';
+import { LoginComponent } from './components/Login/Login';
+import { LogoutComponent } from './components/logout/logout';
+import { FetchUsersComponent } from './components/User/FetchUser';
 import { EditUsersComponent } from './components/User/EditUser';
-import {FetchTaskComponent} from './components/Tasks/FetchTask';
-import {CreateTaskComponent} from './components/Tasks/CreateTask';
+import { FetchTaskComponent } from './components/Tasks/FetchTask';
+import { CreateTaskComponent } from './components/Tasks/CreateTask';
 import './custom.css'
 
 export default class App extends Component {
   static displayName = App.name;
 
-  render () {
+  render() {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/fetchemployee' component={FetchEmployee} />
         <Route path='/addemployee' component={AddEmployee} />
-        <Route path='/employee/edit/:empid' component={AddEmployee} />  
-        <Route path='/fetchcity' component={FetchCity} /> 
+        <Route path='/employee/edit/:empid' component={AddEmployee} />
+        <Route path='/fetchcity' component={FetchCity} />
         <Route path='/addnewcity' component={AddCity} />
         <Route path='/city/edit/:cityid' component={AddCity} />
         <Route path='/fetchDepartment' component={FetchDepartment} />

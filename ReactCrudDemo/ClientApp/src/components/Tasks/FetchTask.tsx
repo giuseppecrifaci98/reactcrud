@@ -24,8 +24,8 @@ export class FetchTaskComponent extends React.Component<RouteComponentProps<{}>,
 
     componentDidMount() {
         const authorize = localStorage.getItem('login')
-        
-        if(!authorize)
+
+        if (!authorize)
             this.props.history.push("/login");
         else this.GetTask(localStorage.getItem('email'));
     }
