@@ -5,24 +5,25 @@ import './NavMenu.css';
 import axios from 'axios';
 
 export class NavMenu extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
-    
+
     this.state = {
       collapsed: true
     };
   }
 
-  toggleNavbar () {
+  toggleNavbar() {
     this.setState({
       collapsed: !this.state.collapsed
     });
   }
 
-  render () {
-    const isLogged = localStorage.getItem('login')  ? true: false;
+  render() {
+    const isLogged = localStorage.getItem('login') ? true : false;
+    const isAnonymous = localStorage.getItem('isAnonymous') ? true : false;
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -44,16 +45,19 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-dark" to="/fetchDepartment">Department List</NavLink>
                 </NavItem>
                 {isLogged && <NavItem>
-                <NavLink tag={Link} className="text-dark" to='/fetchuser'>User List</NavLink>
+                  <NavLink tag={Link} className="text-dark" to='/fetchuser'>User List</NavLink>
                 </NavItem>}
-                {!isLogged && <NavItem>
-                <NavLink tag={Link} className="text-dark" to='/login'>Login</NavLink>
+                {isLogged && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/fetchtask'>Task List</NavLink>
+                </NavItem>}
+                {(!isLogged && !isAnonymous) || (!isLogged) && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/login'>Login</NavLink>
                 </NavItem>}
                 <NavItem>
-                <NavLink tag={Link} className="text-dark" to='/register'>Register</NavLink>
+                  <NavLink tag={Link} className="text-dark" to='/register'>Register</NavLink>
                 </NavItem>
-                {isLogged && <NavItem>
-                <NavLink tag={Link} className="text-dark" to='/logout'>Logout</NavLink>
+                {(isLogged && !isAnonymous) || (isLogged) && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/logout'>Logout</NavLink>
                 </NavItem>}
               </ul>
             </Collapse>

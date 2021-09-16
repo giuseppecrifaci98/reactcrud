@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ReactCrudDemo.Controllers;
 using ReactCrudDemo.Models;
+using ReactCrudDemoTest.Class;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,14 +12,6 @@ using System.Transactions;
 
 namespace ReactCrudDemoTest.LoginTest
 {
-    public class JsonConvertedClassReturnValue
-    {
-        public string ContentType { get; set; }
-        public string SerializerSettings { get; set; }
-        public int? StatusCode { get; set; }
-        public string Value { get; set; }
-    }
-
     [TestClass]
     public class TestLoginController
     {

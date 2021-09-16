@@ -10,10 +10,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace ReactCrudDemoTest.EmployeeTest
+namespace ReactCrudDemoTest.TasksTest
 {
     [TestClass]
-    public class TestEmployeeController
+    public class TestTaskController
     {
         private readonly ReactCrudDemoDBContext _context = new ReactCrudDemoDBContext();
         private TransactionScope scope;
@@ -31,10 +31,11 @@ namespace ReactCrudDemoTest.EmployeeTest
         }
 
         [TestMethod]
-        public async Task GetEmployee()
+        [DataRow("mario.rossi@email.it")]
+        public async Task GetTasks(string email)
         {
-            var controller = new EmployeeController(_context);
-            var result = await controller.Index();
+            var controller = new TasksController(_context);
+            var result = await controller.Index(email);
             if (result.Result == null)
                 Assert.IsNull(result.Result);
             else
@@ -44,8 +45,8 @@ namespace ReactCrudDemoTest.EmployeeTest
         [TestMethod]
         public async Task Create()
         {
-            var controller = new EmployeeController(_context);
-            var items = new Employee() { CityId= 4019, Gender="Male", Name="Federico Rossi" };
+            var controller = new TasksController(_context);
+            var items = new Tasks() { TasksName="New Test Task", UserEmail="mario.rossi@email.it", TaskStatusId=2 };
             var resultController = await controller.Create(items);
             var result = resultController.Result as OkObjectResult;
             var convertJsonResult = JsonSerializer.Serialize(result.Value);
@@ -54,10 +55,10 @@ namespace ReactCrudDemoTest.EmployeeTest
         }
 
         [TestMethod]
-        [DataRow(3011)]
+        [DataRow(1)]
         public async Task Details(int id)
         {
-            var controller = new EmployeeController(_context);
+            var controller = new TasksController(_context);
             var resultController = await controller.Details(id);
             if (resultController.Value != null)
                 Assert.IsNotNull(resultController.Value);
@@ -67,7 +68,7 @@ namespace ReactCrudDemoTest.EmployeeTest
         [DataRow(2000)]
         public async Task DetailsNotFound(int id)
         {
-            var controller = new EmployeeController(_context);
+            var controller = new TasksController(_context);
             var resultController = await controller.Details(id);
             Assert.IsNull(resultController.Value);
         }
@@ -75,8 +76,8 @@ namespace ReactCrudDemoTest.EmployeeTest
         [TestMethod]
         public async Task Edit()
         {
-            var controller = new EmployeeController(_context);
-            var items = new Employee() { CityId = 4019, DepartmentId = 1, Gender = "Male", Name = "Mario Rossi Test", EmployeeId= 3017 };
+            var controller = new TasksController(_context);
+            var items = new Tasks() { TasksName = "Task edit di test", UserId = 3, TaskStatusId = 2, TasksId=1 };
             var resultController = await controller.Edit(items);
             var result = resultController.Result as OkObjectResult;
             var convertJsonResult = JsonSerializer.Serialize(result.Value);
@@ -87,50 +88,61 @@ namespace ReactCrudDemoTest.EmployeeTest
         [TestMethod]
         public async Task NoEditBecauseElementNotFound()
         {
-            var controller = new EmployeeController(_context);
-            var items = new Employee() { CityId = 4019, DepartmentId = 1, Gender = "Male", Name = "Mario Rossi Test Not found" };
+            var controller = new TasksController(_context);
+            var items = new Tasks() { TasksName = "Task edit di test", UserId = 3, TaskStatusId = 2, TasksId = 1000 };
             var resultController = await controller.Edit(items);
             var result = resultController.Result as NotFoundResult;
             Assert.AreEqual(404, result.StatusCode);
         }
 
         [TestMethod]
-        [DataRow(3017)]
-        public void EmployeeModelExists(int id)
+        [DataRow(1)]
+        public void TasksModelExists(int id)
         {
-            var controller = new EmployeeController(_context);
-            var result = controller.EmployeeModelExists(id);
+            var controller = new TasksController(_context);
+            var result = controller.TaskModelModelExists(id);
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        [DataRow(1000)]
-        public void DepartmentModelNotExists(int id)
+        [DataRow(3009)]
+        public void TaskModelNotExists(int id)
         {
-            var controller = new EmployeeController(_context);
-            var result = controller.EmployeeModelExists(id);
+            var controller = new TasksController(_context);
+            var result = controller.TaskModelModelExists(id);
             Assert.IsFalse(result);
         }
 
         [TestMethod]
         [DataRow(1000)]
-        public async Task DeleteDepertmentNotExist(int id)
+        public async Task DeleteTaskNotExist(int id)
         {
-            var controller = new EmployeeController(_context);
+            var controller = new TasksController(_context);
             var resultController = await controller.Delete(id);
             var result = resultController.Result as NotFoundResult;
             Assert.AreEqual(404, result.StatusCode);
         }
 
         [TestMethod]
-        [DataRow(3011)]
+        [DataRow(1)]
         public async Task Delete(int id)
         {
-            var controller = new EmployeeController(_context);
+            var controller = new TasksController(_context);
             var resultController = await controller.Delete(id);
             if (resultController.Value != null)
                 Assert.IsNotNull(resultController.Value);
         }
 
+
+        [TestMethod]
+        public async Task GetTaskStatus()
+        {
+            var controller = new TasksController(_context);
+            var result = await controller.getTasksStatus();
+            if (result.Result == null)
+                Assert.IsNull(result.Result);
+            else
+                Assert.IsNotNull(result.Result);
+        }
     }
 }

@@ -4,7 +4,6 @@ import { UserData } from '../../class/UserData';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastBody } from 'reactstrap';
 toast.configure();
 
 interface FetchUserDataDataState{
@@ -45,7 +44,7 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
             }
             else{
                 this.setState({checkExistUser: false});
-                toast.error("User created successfully");
+                toast.success("User created successfully");
                 this.props.history.push("/login");
             }
         });

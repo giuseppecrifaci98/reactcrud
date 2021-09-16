@@ -14,6 +14,7 @@ export class Home extends Component {
   }
 
   componentDidMount() {
+    localStorage.clear();
     this.getUserLogged();
   }
 
@@ -23,11 +24,13 @@ export class Home extends Component {
         var email = responseJson.data['email'];
         var isAnonymous = responseJson.data['isAnonymous'];
         if (!isAnonymous && email != null) {
-          this.setState({ username: email, isAuthenticate: !isAnonymous, isAnonymous: isAnonymous })
+          this.setState({ isAnonymous: isAnonymous, isAuthenticate: !isAnonymous, username: email })
           localStorage.setItem('email', email);
-        }
-        else
-          this.setState({ isAnonymous: isAnonymous, isAuthenticate: !isAnonymous })
+          localStorage.setItem('login', true);
+        } else if (isAnonymous && email == null)
+          this.setState({ username: null, isAuthenticate: !isAnonymous, isAnonymous: isAnonymous });
+
+        localStorage.setItem('isAnonymous', isAnonymous);
       }
     });
   }
@@ -75,7 +78,7 @@ export class Home extends Component {
               </div>
             </div>
 
-            {(this.state.isAuthenticate && !this.state.isAnonymous) &&
+            {this.state.isAuthenticate &&
               <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
                 <div className="card-header">
                   Users
@@ -87,6 +90,20 @@ export class Home extends Component {
                 </div>
               </div>
             }
+
+            {this.state.isAuthenticate &&
+              <div className="card col-xs-3 col-md-3 col-lg-3 mb-4 col-sm-12">
+                <div className="card-header">
+                  Tasks
+                </div>
+                <div className="card-body">
+                  <h5 className="card-title">Tasks Management</h5>
+                  <p className="card-text">Accessing this section you can create, modify and delete Tasks.</p>
+                  <Link to="/fetchtask" className="btn btn-primary">Go</Link>
+                </div>
+              </div>
+            }
+
 
           </div>
         </div>

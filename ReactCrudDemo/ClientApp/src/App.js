@@ -13,6 +13,8 @@ import {LoginComponent} from './components/Login/Login';
 import {LogoutComponent} from './components/logout/logout';
 import {FetchUsersComponent} from './components/User/FetchUser';
 import { EditUsersComponent } from './components/User/EditUser';
+import {FetchTaskComponent} from './components/Tasks/FetchTask';
+import {CreateTaskComponent} from './components/Tasks/CreateTask';
 import './custom.css'
 
 export default class App extends Component {
@@ -36,6 +38,9 @@ export default class App extends Component {
         <Route path='/logout' component={LogoutComponent} />
         <Route path='/fetchuser' component={FetchUsersComponent} />
         <Route path='/user/edit/:id' component={EditUsersComponent} />
+        <Route path='/fetchtask' component={FetchTaskComponent} />
+        <Route path='/task/edit/:taskid' component={CreateTaskComponent} />
+        <Route path='/addnewtask' component={CreateTaskComponent} />
       </Layout>
     );
   }

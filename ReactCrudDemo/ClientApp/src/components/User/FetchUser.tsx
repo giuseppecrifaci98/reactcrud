@@ -9,7 +9,6 @@ import '../../custom.css';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastBody } from 'reactstrap';
 toast.configure();
 
 interface FetchUsereDataState{

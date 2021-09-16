@@ -18,6 +18,9 @@ namespace ReactCrudDemo.Models
         public TaskStatus TaskStatus { get; set; }
 
         [NotMapped]
+        public string TaskStatusName { get; set; }
+
+        [NotMapped]
         public string UserEmail { get; set; }
 
         [ForeignKey("UserId")]
