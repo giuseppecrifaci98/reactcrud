@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using ReactCrudDemo.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,10 @@ using System.Web.Helpers;
 
 namespace ReactCrudDemo.Controllers
 {
+    public class ResponseUserLogged{ 
+        public string Email { get; set; }
+        public bool? IsAnonymous { get; set; }
+    }
     public class LoginController : Controller
     {
 
@@ -89,20 +94,25 @@ namespace ReactCrudDemo.Controllers
 
         [HttpPost]
         [Route("api/Login/CheckLogin")]
-        public async Task<ActionResult<User>> CheckLogin()
+        public async Task<ActionResult<ResponseUserLogged>> CheckLogin()
         {
             try
             {
+                var responseMessage = new ResponseUserLogged();
                 if (HttpContext == null)
                     return StatusCode(401);
 
                 if (HttpContext != null && HttpContext.User.Claims.Count() > 0)
-                return Ok(HttpContext.User.Claims.ToList()[0].Value);
+                {
+                    responseMessage.Email = HttpContext.User.Claims.ToList()[0].Value;
+                    responseMessage.IsAnonymous = false;
+                    return responseMessage;
+                }
 
-                return null;
-
+                responseMessage.IsAnonymous = true;
+                return responseMessage;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500);
             }

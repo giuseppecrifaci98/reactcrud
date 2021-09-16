@@ -34,7 +34,7 @@ export class LogoutComponent extends React.Component<RouteComponentProps<{}>, Fe
        await axios.post('api/login/Logout')
         .then(responseJson=>{
           if(responseJson.data==''){
-            localStorage.removeItem('login');
+            localStorage.clear();
             window.location.href='/';
             toast.success("Logout successfu");
     }
