@@ -50,8 +50,7 @@ namespace ReactCrudDemo.Models
         {
             try
             {
-                //db.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                db.MarkAsModified(city);
+                db.Entry(city).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 db.SaveChanges();
                 return 1;
             }

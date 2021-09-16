@@ -1,4 +1,4 @@
-Crud with React and  Entity Framework Core where I used:
+Crud and management  To do list with React and Entity Framework Core where I used:
 - Bootstrap for the front-end
 - FontAwesome for the icons
 - Axios for the http calls

@@ -23,5 +23,7 @@ namespace ReactCrudDemo.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public ICollection<Tasks> Tasks { get; set; }
     }
 }
