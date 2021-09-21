@@ -12,6 +12,7 @@ interface FetchUserDataDataState {
     userlist: UserData;
     loading: boolean;
     checkExistUser: boolean;
+    errorMessage?:string;
 }
 
 export class RegisterComponent extends React.Component<RouteComponentProps<{}>, FetchUserDataDataState> {
@@ -53,8 +54,11 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
 
     private handleSave(e) {
         e.preventDefault();
-        const data = new FormData(e.target);
-        this.Register(data);
+        if(e.target.elements.password.value==e.target.elements.confermapassword.value){
+            const data = new FormData(e.target);
+            this.Register(data);
+        }else
+            this.setState({errorMessage:"The two passwords do not match"});
     }
 
     private renderCreateForm() {
@@ -84,7 +88,16 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
                     </div>
                 </div>
 
+                < div className="form-group row" >
+                    <label className=" control-label col-md-12" htmlFor="Conferma Password">Confirm password:</label>
+                    <div className="col-md-4">
+                        <input className="form-control" type="password" name="confermapassword" defaultValue={this.state.userlist.confermapassword} required />
+                    </div>
+                </div>
+
                 {this.state.checkExistUser == true ? <p className="text-danger">The user you are trying to add already exists.</p> : ''}
+
+                {this.state.errorMessage!=null ? <p className="text-danger">The two passwords do not match</p>: ''}
 
                 <div className="form-group mb-2 mt-2">
                     <button type="submit" className="btn btn-success">Create User</button>  &nbsp;

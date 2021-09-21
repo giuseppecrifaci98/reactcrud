@@ -12,7 +12,7 @@ interface EditUserDataState {
     loading: boolean;
     userlist: UserData;
     checkExistUser: boolean;
-    checkPassword?: boolean;
+    errorMessage?: string;
 }
 
 export class EditUsersComponent extends React.Component<RouteComponentProps<{}>, EditUserDataState> {
@@ -62,13 +62,11 @@ export class EditUsersComponent extends React.Component<RouteComponentProps<{}>,
         event.preventDefault();
         const data = new FormData(event.target);
 
-        if (this.state.userlist.password != this.state.userlist.confermapassword)
-            this.setState({ checkPassword: false })
-        else
-            this.setState({ checkPassword: true })
-
-        if (this.state.userlist.userId)
+        if(event.target.elements.password.value==event.target.elements.confermapassword.value){
+            if (this.state.userlist.userId)
             this.EditUser(data);
+        }else
+        this.setState({errorMessage:"The two passwords do not match"});
     }
 
     private handleCancel(e) {
@@ -104,13 +102,13 @@ export class EditUsersComponent extends React.Component<RouteComponentProps<{}>,
                 </div>
 
                 <div className="form-group row" >
-                    <label className=" control-label col-md-12" htmlFor="Conferma Password">Password:</label>
+                    <label className=" control-label col-md-12" htmlFor="Conferma Password">Confirm Password:</label>
                     <div className="col-md-4">
-                        <input className="form-control" type="password" name="confermaPassword" defaultValue={this.state.userlist.confermapassword} required />
+                        <input className="form-control" type="password" name="confermapassword" defaultValue={this.state.userlist.confermapassword} required />
                     </div>
                 </div>
 
-                {this.state.checkPassword == false ? <p className="text-danger">The password must be equals.</p> : ''}
+                {this.state.errorMessage != null ? <p className="text-danger">The password must be equals.</p> : ''}
 
                 <div className="form-group mb-2 mt-2">
                     <button type="submit" className="btn btn-success">Edit User</button>  &nbsp;
