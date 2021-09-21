@@ -61,7 +61,7 @@ export class AddCity extends React.Component<RouteComponentProps<{}>, FetchCityD
                 }
                 else {
                     this.setState({ checkExistCity: false });
-                    toast.success('City happened successfully');
+                    toast.success('City created successfully');
                     this.props.history.push("/fetchcity");
                 }
             });

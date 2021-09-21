@@ -25,7 +25,7 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     public render(){
     let noData = this.state.cityList.length==0 ? false: true;
     let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderCityTable(this.state.cityList) : <p>No Data</p>;
-    let visibileAction = localStorage.getItem('login')  ? true: false;
+    let visibileAction = localStorage.getItem('role')=='admin'  ? true: false;
 
     return <div>  
         <h1>City Data</h1>  
@@ -68,8 +68,9 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
     }  
 
         private renderCityTable(cityList: CityData[]) {  
-            let visibileAction = localStorage.getItem('login')  ? true: false;
-            return <table className='table table-striped'>  
+            let visibileAction = localStorage.getItem('role') == 'admin' ? true: false;
+            let contentShow = visibileAction ? 
+            <table className='table table-striped'>  
                 <thead>  
                     <tr>  
                         <th scope="col">City Id</th>  
@@ -89,7 +90,8 @@ export class FetchCity extends React.Component<RouteComponentProps<{}>, FetchCit
                         </tr>  
                     )}  
                 </tbody>  
-            </table>;  
+            </table> : <p>Section available only for administrators</p>
+            return contentShow;
         }
 
 }

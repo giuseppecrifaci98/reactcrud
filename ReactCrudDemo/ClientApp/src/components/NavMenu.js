@@ -23,7 +23,7 @@ export class NavMenu extends Component {
 
   render() {
     const isLogged = localStorage.getItem('login') ? true : false;
-    const isAnonymous = localStorage.getItem('isAnonymous') ? true : false;
+    const isAdministrator = localStorage.getItem('role') =='admin' ? true : false;
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -35,28 +35,34 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
+                {isLogged && isAdministrator &&
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/fetchemployee">Employee List</NavLink>
                 </NavItem>
+                }
+                  {isLogged && isAdministrator &&
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/fetchcity">City List</NavLink>
                 </NavItem>
+                  }
+                    {isLogged && isAdministrator &&
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/fetchDepartment">Department List</NavLink>
                 </NavItem>
-                {isLogged && <NavItem>
+                  }
+                {isLogged && isAdministrator && <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/fetchuser'>User List</NavLink>
                 </NavItem>}
                 {isLogged && <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/fetchtask'>Task List</NavLink>
                 </NavItem>}
-                {(!isLogged && !isAnonymous) || (!isLogged) && <NavItem>
+                {!isLogged && <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/login'>Login</NavLink>
                 </NavItem>}
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/register'>Register</NavLink>
                 </NavItem>
-                {(isLogged && !isAnonymous) || (isLogged) && <NavItem>
+                {isLogged && <NavItem>
                   <NavLink tag={Link} className="text-dark" to='/logout'>Logout</NavLink>
                 </NavItem>}
               </ul>

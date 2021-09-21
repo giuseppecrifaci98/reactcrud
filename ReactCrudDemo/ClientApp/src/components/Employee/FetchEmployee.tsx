@@ -24,7 +24,7 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     }
 
     public render() {
-        let visibileAction = localStorage.getItem('login') ? true : false;
+        let visibileAction = localStorage.getItem('role')=='admin' ? true : false;
         let noData = !visibileAction && this.state.empList.length == 0 ? this.state.errorMessage : visibileAction && this.state.empList.length > 0 ? true : false;
         let contents = this.state.loading ? <p><em>Loading...</em></p> : noData ? this.renderEmployeeTable(this.state.empList) : <p>No Data</p>;
 
@@ -75,7 +75,7 @@ export class FetchEmployee extends React.Component<RouteComponentProps<{}>, Fetc
     }
 
     private renderEmployeeTable(empList: EmployeeData[]) {
-        const visibileAction = localStorage.getItem('login') ? true : false;
+        const visibileAction = localStorage.getItem('role')=='admin' ? true : false;
         const contentShow = this.state.errorMessage != null ? <Link to="/login">Login</Link> :
             <table className='table table-striped'>
                 <thead>

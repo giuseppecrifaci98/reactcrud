@@ -14,7 +14,6 @@ toast.configure();
 interface FetchUsereDataState {
     userlist: UserData[];
     loading: boolean;
-    errorMessage?: string;
 }
 
 export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>, FetchUsereDataState> {
@@ -27,7 +26,7 @@ export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>
         await axios.get('api/User/Index').then(res => {
             this.setState({ userlist: res.data, loading: false });
         }).catch(err => {
-            this.setState({ userlist: [], loading: false, errorMessage: "To see this section you must be authenticated. If you are not authenticated try to login" });
+            this.setState({ userlist: [], loading: false });
         });
     }
 
@@ -36,8 +35,8 @@ export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>
     }
 
     public render() {
-        let visibileAction = localStorage.getItem('login') ? true : false;
-        let noData = !visibileAction && this.state.userlist.length == 0 ? this.state.errorMessage : visibileAction && this.state.userlist.length > 0 ? true : false;
+        let visibileAction =  localStorage.getItem('role')=='admin' ? true : false;
+        let noData = !visibileAction && this.state.userlist.length == 0 ? <p>Section available only for administrators</p> : visibileAction && this.state.userlist.length > 0 ? true : false;
         let contents = this.state.loading ? <p><em>Loading...</em></p> : noData ? this.renderEmployeeTable(this.state.userlist) : <p>No Data</p>;
 
         return <div>
@@ -74,8 +73,9 @@ export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>
     }
 
     private renderEmployeeTable(userlist: UserData[]) {
-        const visibileAction = localStorage.getItem('login') ? true : false;
-        const contentShow = this.state.errorMessage != null ? <Link to="/login">Login</Link> :
+        const visibileAction = localStorage.getItem('role')=='admin' ? true : false;
+        
+        const contentShow =  visibileAction ?
             <table className='table table-striped'>
                 <thead>
                     <tr>
@@ -99,7 +99,7 @@ export class FetchUsersComponent extends React.Component<RouteComponentProps<{}>
                         </tr>
                     )}
                 </tbody>
-            </table>;
+            </table>: <p>Section available only for administrators</p>;
 
         return contentShow;
     }

@@ -26,7 +26,7 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
         
      let noData = this.state.depList.length==0 ? false: true;
      let contents = this.state.loading  ? <p><em>Loading...</em></p>   : noData ? this.renderDepartmentTable(this.state.depList) : <p>No Data</p>;
-     let visibileAction = localStorage.getItem('login')  ? true: false;
+     let visibileAction = localStorage.getItem('role')=='admin'  ? true: false;
 
     return <div>  
         <h1>Department Data</h1>  
@@ -71,8 +71,9 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
     }  
 
     private renderDepartmentTable(deplist: DepartmentData[]) {  
-        let visibileAction = localStorage.getItem('login')  ? true: false;
-        return <table className='table table-striped'>  
+        let visibileAction = localStorage.getItem('role')=='admin'  ? true: false;
+        let contentShow = visibileAction ? 
+         <table className='table table-striped'>  
             <thead>  
                 <tr>  
                     <th scope="col">Department Id</th>  
@@ -92,7 +93,8 @@ export class FetchDepartment extends React.Component<RouteComponentProps<{}>, Fe
                     </tr>  
                 )}  
             </tbody>  
-        </table>;  
+        </table> :  <p>Section available only for administrators</p>;
+        return contentShow;
     }
 
     

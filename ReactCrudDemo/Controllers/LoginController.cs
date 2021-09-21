@@ -14,7 +14,7 @@ namespace ReactCrudDemo.Controllers
 {
     public class ResponseUserLogged{ 
         public string Email { get; set; }
-        public bool? IsAnonymous { get; set; }
+        public string Role { get; set; }
     }
     public class LoginController : Controller
     {
@@ -92,6 +92,12 @@ namespace ReactCrudDemo.Controllers
             }
         }
 
+        private string GetRoleUserByEmail(string email)
+        {
+            var userRole = _context.Users.Where(x => x.Email == email).Select(y => y.Role).FirstOrDefault();
+            return userRole;
+        }
+
         [HttpPost]
         [Route("api/Login/CheckLogin")]
         public async Task<ActionResult<ResponseUserLogged>> CheckLogin()
@@ -102,14 +108,15 @@ namespace ReactCrudDemo.Controllers
                 if (HttpContext == null)
                     return StatusCode(401);
 
+               
+
                 if (HttpContext != null && HttpContext.User.Claims.Count() > 0)
                 {
                     responseMessage.Email = HttpContext.User.Claims.ToList()[0].Value;
-                    responseMessage.IsAnonymous = false;
+                    responseMessage.Role = GetRoleUserByEmail(responseMessage.Email);
                     return responseMessage;
                 }
 
-                responseMessage.IsAnonymous = true;
                 return responseMessage;
             }
             catch (Exception)
