@@ -21,6 +21,9 @@ namespace ReactCrudDemo.Models
         public string Email { get; set; }
 
         [Required]
+        public string Role { get; set; } = "user";
+
+        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
