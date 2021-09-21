@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
-import axios from 'axios';
 
 export class NavMenu extends Component {
   constructor(props) {
@@ -11,7 +10,7 @@ export class NavMenu extends Component {
     this.toggleNavbar = this.toggleNavbar.bind(this);
 
     this.state = {
-      collapsed: true
+      collapsed: true,
     };
   }
 
@@ -24,8 +23,10 @@ export class NavMenu extends Component {
   render() {
     const isLogged = localStorage.getItem('login') ? true : false;
     const isAdministrator = localStorage.getItem('role') =='admin' ? true : false;
-    return (
-      <header>
+    let menu;
+
+    if(isAdministrator){
+      menu =(
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
             <NavbarBrand tag={Link} to="/">ReactCrudDemo</NavbarBrand>
@@ -69,7 +70,39 @@ export class NavMenu extends Component {
             </Collapse>
           </Container>
         </Navbar>
-      </header>
-    );
+      )
+    }
+    else{
+      menu =(
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+          <Container>
+            <NavbarBrand tag={Link} to="/">ReactCrudDemo</NavbarBrand>
+            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+              <ul className="navbar-nav flex-grow">
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                </NavItem>
+                {isLogged && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/fetchtask'>Task List</NavLink>
+                </NavItem>}
+                {!isLogged && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/login'>Login</NavLink>
+                </NavItem>}
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/register'>Register</NavLink>
+                </NavItem>
+                {isLogged && <NavItem>
+                  <NavLink tag={Link} className="text-dark" to='/logout'>Logout</NavLink>
+                </NavItem>}
+              </ul>
+            </Collapse>
+          </Container>
+        </Navbar>
+      );
+    }
+    
+
+    return <header>{menu}</header>;
   }
 }
