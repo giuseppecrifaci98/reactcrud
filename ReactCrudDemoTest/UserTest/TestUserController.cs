@@ -83,6 +83,28 @@ namespace ReactCrudDemoTest.UserTest
         }
 
         [TestMethod]
+        public async Task RecoveryUser()
+        {
+            var controller = new UserController(_context);
+            var items = new User() { Email = "mario.rossi@email.it", Username = "Mario Rossi", UserId = 3, Password = "1234" };
+            var resultController = await controller.Recovery(items);
+            var result = resultController.Result as OkObjectResult;
+            var convertJsonResult = JsonSerializer.Serialize(result.Value);
+            var jsonConvertedReuslt = JsonSerializer.Deserialize<JsonConvertedClassReturnValue>(convertJsonResult);
+            Assert.AreEqual("Updated", jsonConvertedReuslt.Value);
+        }
+
+        [TestMethod]
+        public async Task RecoveryUserThanNotExist()
+        {
+            var controller = new UserController(_context);
+            var items = new User() { Username = "Mario Venezia", UserId = 3000, Password = "Pippo" };
+            var resultController = await controller.Recovery(items);
+            var result = resultController.Result as NotFoundResult;
+            Assert.AreEqual(404, result.StatusCode);
+        }
+
+        [TestMethod]
         [DataRow(3)]
         public void UserModelExists(int id)
         {

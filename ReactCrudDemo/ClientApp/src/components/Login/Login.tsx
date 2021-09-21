@@ -4,6 +4,7 @@ import { UserData } from '../../class/UserData';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {Link} from 'react-router-dom';
 toast.configure();
 
 interface FetchUserDataDataState {
@@ -91,7 +92,12 @@ export class LoginComponent extends React.Component<RouteComponentProps<{}>, Fet
                     <button type="submit" className="btn btn-success">Login</button>  &nbsp;
                     <button className="btn btn-danger" onClick={(e) => this.handleCancel(e)}>Cancel</button>
                 </div>
-            </form >
+               
+                <div className="form-group mb-2 mt-2">
+                <Link to='/register'>Register</Link> or <Link to='/recoveryPassword'>Recovery Password</Link>
+                </div>
+                
+            </form>
         )
     }
 }

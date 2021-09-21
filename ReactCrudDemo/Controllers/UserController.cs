@@ -82,6 +82,44 @@ namespace ReactCrudDemo.Controllers
             return Ok(Json("Updated"));
         }
 
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/User/Recovery")]
+        public async Task<ActionResult<User>> Recovery([FromForm] User user)
+        {
+            int? userid = _context.Users.Where(x => x.Email == user.Email).Select(y => y.UserId).FirstOrDefault();
+            string username = _context.Users.Where(x => x.Email == user.Email).Select(y => y.Username).FirstOrDefault();
+            string? role = _context.Users.Where(x => x.Email == user.Email).Select(y => y.Role).FirstOrDefault();
+
+
+            if (userid == null && username==null && role==null)
+                return NotFound();
+
+            user.UserId = (int)userid;
+            user.Username = username;
+            user.Role = role;
+            user.Password = Crypto.HashPassword(user.Password);
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserModelExists(user.UserId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(Json("Updated"));
+        }
+
         public bool UserModelExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
@@ -100,6 +138,8 @@ namespace ReactCrudDemo.Controllers
             await _context.SaveChangesAsync();
             return userModel;
         }
+
+       
 
 
     }

@@ -4,28 +4,30 @@ import { UserData } from '../../class/UserData';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 toast.configure();
 
-interface FetchUserDataDataState {
+interface FetchRecoveryPasswordDataDataState {
     title: string;
     userlist: UserData;
     loading: boolean;
-    checkExistUser: boolean;
+    checkUserLogged: boolean;
+    confirmedPassword?:string;
 }
 
-export class RegisterComponent extends React.Component<RouteComponentProps<{}>, FetchUserDataDataState> {
-    constructor(props: RouteComponentProps<{}>) {
+export class RecoveryPasswordComponent extends React.Component<RouteComponentProps<{}>, FetchRecoveryPasswordDataDataState> {
+    constructor(props) {
         super(props);
-        this.state = { title: "", loading: false, userlist: new UserData, checkExistUser: false };
+        this.state = { title: "", loading: false, userlist: new UserData, checkUserLogged: false };
     }
+
 
     public render() {
         let contents = this.state.loading ? <p><em>Loading...</em></p> : this.renderCreateForm();
 
         return <div>
             <h1>{this.state.title}</h1>
-            <p>This form allows you to sign in</p>
+            <p>This form allows you recovery password</p>
             <hr />
             {contents}
         </div>;
@@ -36,38 +38,31 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
         this.props.history.push("");
     }
 
-    private async Register(data: FormData) {
-        await axios.post('api/login/Register', data)
-            .then(responseJson => {
-                if (responseJson.data['value'] == "Already registered user") {
-                    this.setState({ checkExistUser: true });
-                    toast.warning("Already registered user");
-                }
-                else {
-                    this.setState({ checkExistUser: false });
-                    toast.success("User created successfully");
-                    this.props.history.push("/login");
-                }
-            });
+    private async Recovery(data: FormData) {
+        await axios.put(`api/User/Recovery`, data)
+        .then(res => {
+            if (res.data['value'] == "Updated")
+                this.props.history.push("/login");
+        });
+        toast.success("User recovered successfully");
     }
 
     private handleSave(e) {
         e.preventDefault();
         const data = new FormData(e.target);
-        this.Register(data);
+        this.Recovery(data);
     }
 
     private renderCreateForm() {
+        const authorize = localStorage.getItem('login')
+
+        if (authorize)
+            this.props.history.push("/");
+
         return (
             <form onSubmit={(e) => this.handleSave(e)} >
                 <div className="form-group row" >
                     <input type="hidden" name="userId" value={this.state.userlist.userId} />
-                </div>
-                < div className="form-group row" >
-                    <label className=" control-label col-md-12" htmlFor="Username">Username:</label>
-                    <div className="col-md-4">
-                        <input className="form-control" type="text" name="username" defaultValue={this.state.userlist.username} required />
-                    </div>
                 </div>
 
                 < div className="form-group row" >
@@ -84,17 +79,18 @@ export class RegisterComponent extends React.Component<RouteComponentProps<{}>, 
                     </div>
                 </div>
 
-                {this.state.checkExistUser == true ? <p className="text-danger">The user you are trying to add already exists.</p> : ''}
+                < div className="form-group row" >
+                    <label className=" control-label col-md-12" htmlFor="Confirmed password">Conferma password:</label>
+                    <div className="col-md-4">
+                        <input className="form-control" type="password" name="confirmedPassword" defaultValue={this.state.confirmedPassword} required />
+                    </div>
+                </div>
 
                 <div className="form-group mb-2 mt-2">
-                    <button type="submit" className="btn btn-success">Create User</button>  &nbsp;
+                    <button type="submit" className="btn btn-success">Recovery</button>  &nbsp;
                     <button className="btn btn-danger" onClick={(e) => this.handleCancel(e)}>Cancel</button>
                 </div>
-
-                <div className="form-group mb-2 mt-2">
-                <Link to='/login'>Login</Link> or <Link to='/recoveryPassword'>Recovery Password</Link>
-                </div>
-            </form >
+            </form>
         )
     }
 }

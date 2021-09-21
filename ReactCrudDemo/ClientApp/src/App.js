@@ -18,6 +18,7 @@ import { CreateTaskComponent } from './components/Tasks/CreateTask';
 import { DashboardUser } from './components/dashboard/dashboardUser';
 import { DashboardAdminComponent } from './components/dashboard/dashboardAdmin';
 import {DashboardNotLoggedComponent} from './components/dashboard/dashboardNotLogged';
+import { RecoveryPasswordComponent } from './components/User/recoverypassword';
 import './custom.css'
 
 export default class App extends Component {
@@ -39,6 +40,7 @@ export default class App extends Component {
         <Route path='/register' component={RegisterComponent} />
         <Route path='/login' component={LoginComponent} />
         <Route path='/logout' component={LogoutComponent} />
+        <Route path='/recoveryPassword' component={RecoveryPasswordComponent} />
         <Route path='/fetchuser' component={FetchUsersComponent} />
         <Route path='/user/edit/:id' component={EditUsersComponent} />
         <Route path='/fetchtask' component={FetchTaskComponent} />
